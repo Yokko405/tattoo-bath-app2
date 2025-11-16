@@ -3,24 +3,10 @@
  */
 
 const CACHE_NAME = 'tattoo-bath-app-v1';
-const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/main.js',
-  '/data/facilities.json',
-];
 
-// Install event - cache static assets
+// Install event - skip precaching to avoid path issues
 self.addEventListener('install', (event) => {
   console.log('Service Worker: Installing...');
-
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Service Worker: Caching static assets');
-      return cache.addAll(STATIC_ASSETS);
-    })
-  );
-
   self.skipWaiting();
 });
 
