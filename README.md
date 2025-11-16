@@ -109,20 +109,31 @@ npm run build
 
 ## デプロイ
 
-### Cloudflare Pagesへのデプロイ
+### GitHub Pagesへのデプロイ
 
-1. Cloudflare Pagesダッシュボードでプロジェクトを作成
-2. GitHubリポジトリを接続
-3. ビルド設定:
-   - ビルドコマンド: `npm run build`
-   - ビルド出力ディレクトリ: `dist`
-   - ルートディレクトリ: `/`
+1. **GitHubリポジトリの設定**
+   - Settings → Pages → Source を "GitHub Actions" に設定
 
-### Cloudflare Workersのデプロイ
+2. **Google Maps APIキーをSecretsに追加**
+   - Settings → Secrets and variables → Actions
+   - New repository secret をクリック
+   - Name: `VITE_GOOGLE_MAPS_API_KEY`
+   - Value: あなたのGoogle Maps APIキー
+
+3. **デプロイ**
+   - `main`または`master`ブランチにプッシュすると自動デプロイ
+   - または Actions タブから手動実行
+
+4. **公開URL**
+   - `https://Yokko405.github.io/tattoo-bath-app2/`
+
+### 手動ビルド
 
 ```bash
-npm run deploy
+npm run build
 ```
+
+ビルド成果物は `dist/` ディレクトリに出力されます。
 
 ## データ管理
 
