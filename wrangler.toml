@@ -1,0 +1,14 @@
+name = "tattoo-bath-app"
+main = "workers/facilities-api.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespaces (for future use)
+# [[kv_namespaces]]
+# binding = "FACILITIES_KV"
+# id = "your-kv-namespace-id"
+
+# Routes configuration
+# [env.production]
+# routes = [
+#   { pattern = "yourdomain.com/api/*", zone_name = "yourdomain.com" }
+# ]
