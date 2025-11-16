@@ -14,7 +14,7 @@ export async function fetchFacilities() {
   }
 
   try {
-    const response = await fetch('/data/facilities.json');
+    const response = await fetch(import.meta.env.BASE_URL + 'data/facilities.json');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
