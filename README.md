@@ -63,13 +63,33 @@ npm install
 
 ### 2. Google Maps APIキーの設定
 
-`src/main.js`の37行目を編集:
+**重要**: APIキーは環境変数で管理します（セキュリティのため）
 
-```javascript
-this.googleMapsApiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+1. `.env`ファイルを作成:
+```bash
+cp .env.example .env
 ```
 
-Google Maps APIキーは [Google Cloud Console](https://console.cloud.google.com/) で取得できます。
+2. `.env`ファイルを編集:
+```env
+VITE_GOOGLE_MAPS_API_KEY=あなたのAPIキー
+```
+
+3. Google Maps APIキーの取得・設定方法:
+   - [Google Cloud Console](https://console.cloud.google.com/)でプロジェクト作成
+   - 「Maps JavaScript API」を有効化
+   - 認証情報でAPIキーを作成
+   - **必須**: APIキーに制限を設定
+     - アプリケーション制限: HTTPリファラー
+     - 許可するウェブサイト: `localhost:3000/*`, `yourdomain.com/*`
+     - API制限: Maps JavaScript APIのみ
+
+⚠️ **セキュリティ注意事項**:
+- `.env`ファイルは`.gitignore`に含まれており、Gitにコミットされません
+- フロントエンドのAPIキーは完全には隠せませんが、以下で保護:
+  - ドメイン制限（リファラー制限）
+  - API使用量制限の設定
+  - 請求アラートの設定
 
 ### 3. 開発サーバーの起動
 

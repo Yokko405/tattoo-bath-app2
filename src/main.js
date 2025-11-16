@@ -33,8 +33,8 @@ class TattooBathApp {
     };
     this.userLocation = null;
 
-    // Google Maps API Key - Replace with your actual API key
-    this.googleMapsApiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+    // Google Maps API Key from environment variable
+    this.googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
 
     this.init();
   }
