@@ -2,7 +2,14 @@
  * Authentication utilities for Cloudflare Workers API
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+// API_BASE_URLは絶対URLである必要があります（相対パスではない）
+let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
+// 絶対URLでない場合（相対パスの場合）、空文字列にする
+if (API_BASE_URL && !API_BASE_URL.startsWith('http://') && !API_BASE_URL.startsWith('https://')) {
+  console.warn('VITE_API_BASE_URL must be an absolute URL (starting with http:// or https://)');
+  API_BASE_URL = '';
+}
 
 /**
  * Check if user is authenticated
@@ -10,6 +17,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
  */
 export async function checkAuthStatus() {
   try {
+    if (!API_BASE_URL) {
+      return false;
+    }
     const response = await fetch(`${API_BASE_URL}/api/auth/status`, {
       method: 'GET',
       credentials: 'include',
@@ -34,6 +44,12 @@ export async function checkAuthStatus() {
  */
 export async function login(password) {
   try {
+    if (!API_BASE_URL) {
+      return {
+        success: false,
+        message: 'API URLが設定されていません',
+      };
+    }
     const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
@@ -71,6 +87,12 @@ export async function login(password) {
  */
 export async function logout() {
   try {
+    if (!API_BASE_URL) {
+      return {
+        success: false,
+        message: 'API URLが設定されていません',
+      };
+    }
     const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
       method: 'POST',
       credentials: 'include',
