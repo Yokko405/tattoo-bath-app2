@@ -56,7 +56,7 @@ class TattooBathApp {
       // Show app content after authentication check
       const appElement = document.getElementById('app');
       if (appElement) {
-        appElement.style.display = 'block';
+        appElement.classList.add('authenticated');
       }
 
       // Show loading
@@ -94,7 +94,7 @@ class TattooBathApp {
     // Hide app content until authenticated
     const appElement = document.getElementById('app');
     if (appElement) {
-      appElement.style.display = 'none';
+      appElement.classList.remove('authenticated');
     }
 
     this.loginModal = new LoginModal(loginContainer, async () => {
