@@ -45,7 +45,9 @@ class TattooBathApp {
     try {
       // Check authentication if API is configured
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      if (apiBaseUrl) {
+      
+      // API URLが設定されている場合のみ認証チェック
+      if (apiBaseUrl && apiBaseUrl.startsWith('http')) {
         const isAuthenticated = await checkAuthStatus();
         if (!isAuthenticated) {
           this.showLoginModal();
@@ -53,7 +55,7 @@ class TattooBathApp {
         }
       }
 
-      // Show app content after authentication check
+      // 認証が不要、または認証済みの場合、アプリコンテンツを表示
       const appElement = document.getElementById('app');
       if (appElement) {
         appElement.classList.add('authenticated');
