@@ -281,10 +281,13 @@ async function handleLogin(request, env, corsHeaders) {
 async function handleLogout(request, env, corsHeaders) {
   try {
     const url = new URL(request.url);
+    const origin = request.headers.get('Origin');
     const isSecure = url.protocol === 'https:';
+    const isCrossOrigin = origin && !origin.includes(url.hostname);
+    const sameSite = isCrossOrigin && isSecure ? 'SameSite=None' : 'SameSite=Lax';
     
     // セッションCookieを削除（開発用：KVストア不要）
-    const cookie = `session=; HttpOnly; ${isSecure ? 'Secure;' : ''} SameSite=Lax; Max-Age=0; Path=/`;
+    const cookie = `session=; HttpOnly; ${isSecure ? 'Secure;' : ''} ${sameSite}; Max-Age=0; Path=/`;
 
     return new Response(
       JSON.stringify({ success: true, message: 'ログアウト成功' }),
