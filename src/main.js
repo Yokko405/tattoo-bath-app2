@@ -18,6 +18,7 @@ import {
 
 import { getFavorites } from './utils/storage.js';
 import { getCurrentLocation, sortByDistance } from './utils/geo.js';
+import { checkAuth } from './utils/auth.js';
 
 import './styles/main.css';
 
@@ -268,5 +269,11 @@ if ('serviceWorker' in navigator) {
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+  // Check password authentication
+  if (!checkAuth()) {
+    document.body.innerHTML = '<div style="text-align: center; padding: 50px;"><h1>アクセスが拒否されました</h1></div>';
+    return;
+  }
+
   window.app = new TattooBathApp();
 });
