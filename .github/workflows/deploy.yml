@@ -35,6 +35,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify environment variables
+        run: |
+          echo "Checking VITE_API_BASE_URL..."
+          if [ -z "${{ secrets.VITE_API_BASE_URL }}" ]; then
+            echo "ERROR: VITE_API_BASE_URL is not set in GitHub Secrets"
+            exit 1
+          fi
+          echo "VITE_API_BASE_URL is set (value hidden for security)"
+          if [[ ! "${{ secrets.VITE_API_BASE_URL }}" =~ ^https?:// ]]; then
+            echo "ERROR: VITE_API_BASE_URL must start with http:// or https://"
+            echo "Current value starts with: ${{{ secrets.VITE_API_BASE_URL }}:0:10}..."
+            exit 1
+          fi
+
       - name: Build
         run: npm run build
         env:
