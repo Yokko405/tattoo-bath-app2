@@ -53,6 +53,12 @@ class TattooBathApp {
         }
       }
 
+      // Show app content after authentication check
+      const appElement = document.getElementById('app');
+      if (appElement) {
+        appElement.style.display = 'block';
+      }
+
       // Show loading
       this.showLoading();
 
@@ -84,6 +90,12 @@ class TattooBathApp {
   showLoginModal() {
     const loginContainer = document.getElementById('login-modal-container');
     if (!loginContainer) return;
+
+    // Hide app content until authenticated
+    const appElement = document.getElementById('app');
+    if (appElement) {
+      appElement.style.display = 'none';
+    }
 
     this.loginModal = new LoginModal(loginContainer, async () => {
       // Login successful, reload the app

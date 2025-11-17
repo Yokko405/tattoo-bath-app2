@@ -7,7 +7,13 @@ let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 // 絶対URLでない場合（相対パスの場合）、空文字列にする
 if (API_BASE_URL && !API_BASE_URL.startsWith('http://') && !API_BASE_URL.startsWith('https://')) {
-  console.warn('VITE_API_BASE_URL must be an absolute URL (starting with http:// or https://)');
+  // デバッグ用：開発環境でのみ警告を表示
+  if (import.meta.env.DEV) {
+    console.warn('VITE_API_BASE_URL must be an absolute URL (starting with http:// or https://)', {
+      value: API_BASE_URL,
+      type: typeof API_BASE_URL,
+    });
+  }
   API_BASE_URL = '';
 }
 
