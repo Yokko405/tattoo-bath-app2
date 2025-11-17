@@ -11,6 +11,7 @@
 - **フィルタリング**: 都道府県、タグ、お気に入りでの絞り込み
 - **現在地検索**: 現在地から近い施設を検索
 - **お気に入り機能**: LocalStorageを使用したお気に入り管理
+- **パスワード認証**: Cloudflare Workersによるセキュアな認証（オプション）
 - **PWA対応**: オフライン対応、ホーム画面追加可能
 - **レスポンシブデザイン**: モバイル、タブレット、デスクトップ対応
 
@@ -20,6 +21,7 @@
 - **地図**: Google Maps JavaScript API
 - **データ管理**: 静的JSON (将来的にCloudflare KV対応)
 - **API**: Cloudflare Workers
+- **認証**: Cloudflare Workers + KVストア（セッション管理）
 - **PWA**: Service Worker + Web App Manifest
 
 ## プロジェクト構造
@@ -39,9 +41,11 @@ tattoo-bath-app/
 │   │   ├── FilterPanel.js       # フィルターUI
 │   │   ├── FacilityCard.js      # 施設カード
 │   │   ├── FacilityDetail.js    # 施設詳細モーダル
-│   │   └── MapView.js           # 地図表示
+│   │   ├── MapView.js           # 地図表示
+│   │   └── LoginModal.js        # ログインモーダル
 │   ├── utils/
 │   │   ├── api.js               # API呼び出し
+│   │   ├── auth.js              # 認証ユーティリティ
 │   │   ├── storage.js           # LocalStorage管理
 │   │   └── geo.js               # 位置情報処理
 │   ├── styles/
@@ -93,7 +97,52 @@ VITE_GOOGLE_MAPS_API_KEY=あなたのAPIキー
   - API使用量制限の設定
   - 請求アラートの設定
 
-### 3. 開発サーバーの起動
+### 3. Cloudflare Workers認証の設定（開発段階用・簡易版）
+
+開発段階で知っている人にしか公開しないための、シンプルなパスワード認証:
+
+1. **パスワードの設定**
+   
+   `wrangler.toml`を編集してパスワードを設定:
+   ```toml
+   [vars]
+   PASSWORD = "あなたのパスワード"
+   ```
+   
+   または、本番環境ではシークレットとして設定（推奨）:
+   ```bash
+   wrangler secret put PASSWORD
+   ```
+
+2. **環境変数の設定**
+   
+   `.env`ファイルを作成:
+   ```env
+   VITE_API_BASE_URL=https://your-worker.your-subdomain.workers.dev
+   ```
+   
+   ローカル開発の場合:
+   ```env
+   VITE_API_BASE_URL=http://localhost:8787
+   ```
+
+3. **Workersの起動（開発環境）**
+   ```bash
+   wrangler dev
+   ```
+
+4. **Workersのデプロイ（本番環境）**
+   ```bash
+   npm run deploy
+   # または
+   wrangler deploy
+   ```
+
+**注意**: 開発段階用の簡易認証です。KVストアは不要で、Cookieベースのセッション管理を使用します。
+
+詳細は `DEV_AUTH.md` を参照してください。
+
+### 4. 開発サーバーの起動
 
 ```bash
 npm run dev
@@ -101,7 +150,7 @@ npm run dev
 
 ブラウザで `http://localhost:3000` を開きます。
 
-### 4. ビルド
+### 5. ビルド
 
 ```bash
 npm run build

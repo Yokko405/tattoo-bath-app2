@@ -7,6 +7,7 @@ import { FilterPanel } from './components/FilterPanel.js';
 import { MapView } from './components/MapView.js';
 import { FacilityCard } from './components/FacilityCard.js';
 import { FacilityDetail } from './components/FacilityDetail.js';
+import { LoginModal } from './components/LoginModal.js';
 
 import {
   fetchFacilities,
@@ -18,7 +19,7 @@ import {
 
 import { getFavorites } from './utils/storage.js';
 import { getCurrentLocation, sortByDistance } from './utils/geo.js';
-import { checkAuth } from './utils/auth.js';
+import { checkAuthStatus } from './utils/auth.js';
 
 import './styles/main.css';
 
@@ -42,6 +43,16 @@ class TattooBathApp {
 
   async init() {
     try {
+      // Check authentication if API is configured
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      if (apiBaseUrl) {
+        const isAuthenticated = await checkAuthStatus();
+        if (!isAuthenticated) {
+          this.showLoginModal();
+          return;
+        }
+      }
+
       // Show loading
       this.showLoading();
 
@@ -68,6 +79,17 @@ class TattooBathApp {
       console.error('Failed to initialize app:', error);
       this.showError('アプリケーションの初期化に失敗しました。');
     }
+  }
+
+  showLoginModal() {
+    const loginContainer = document.getElementById('login-modal-container');
+    if (!loginContainer) return;
+
+    this.loginModal = new LoginModal(loginContainer, async () => {
+      // Login successful, reload the app
+      await this.init();
+    });
+    this.loginModal.show();
   }
 
   initializeComponents(prefectures, tags) {
@@ -269,11 +291,5 @@ if ('serviceWorker' in navigator) {
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Check password authentication
-  if (!checkAuth()) {
-    document.body.innerHTML = '<div style="text-align: center; padding: 50px;"><h1>アクセスが拒否されました</h1></div>';
-    return;
-  }
-
   window.app = new TattooBathApp();
 });
