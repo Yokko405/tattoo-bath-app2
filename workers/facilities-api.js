@@ -69,6 +69,8 @@ export default {
       'http://localhost:5173',
       'http://127.0.0.1:3000',
       'http://127.0.0.1:5173',
+      'https://yokko405.github.io',
+      'https://Yokko405.github.io',
     ];
     const allowedOrigin = allowedOrigins.includes(origin) ? origin : '*';
 
