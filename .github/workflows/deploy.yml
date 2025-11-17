@@ -46,6 +46,12 @@ jobs:
         with:
           path: './dist'
 
+      - name: Setup Pages (if not enabled)
+        if: failure()
+        run: |
+          echo "GitHub Pages may not be enabled. Please enable it in repository settings."
+          echo "Settings → Pages → Source: GitHub Actions"
+
   deploy:
     environment:
       name: github-pages
