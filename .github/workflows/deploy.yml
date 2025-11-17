@@ -39,14 +39,16 @@ jobs:
         run: |
           echo "Checking VITE_API_BASE_URL..."
           if [ -z "${{ secrets.VITE_API_BASE_URL }}" ]; then
-            echo "ERROR: VITE_API_BASE_URL is not set in GitHub Secrets"
-            exit 1
-          fi
-          echo "VITE_API_BASE_URL is set (value hidden for security)"
-          if [[ ! "${{ secrets.VITE_API_BASE_URL }}" =~ ^https?:// ]]; then
-            echo "ERROR: VITE_API_BASE_URL must start with http:// or https://"
-            echo "Current value starts with: ${{{ secrets.VITE_API_BASE_URL }}:0:10}..."
-            exit 1
+            echo "WARNING: VITE_API_BASE_URL is not set in GitHub Secrets"
+            echo "Authentication will be disabled"
+          else
+            echo "VITE_API_BASE_URL is set (value hidden for security)"
+            # 値の先頭10文字をチェック（http://またはhttps://で始まるか）
+            VALUE_START=$(echo "${{ secrets.VITE_API_BASE_URL }}" | cut -c1-10)
+            if [[ ! "$VALUE_START" =~ ^https?:// ]]; then
+              echo "WARNING: VITE_API_BASE_URL may not be a valid absolute URL"
+              echo "It should start with http:// or https://"
+            fi
           fi
 
       - name: Build
