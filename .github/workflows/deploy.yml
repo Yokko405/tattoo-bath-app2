@@ -35,14 +35,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ←← ここが重要（環境変数を GITHUB_ENV に書く）
-      - name: Set environment variables for Vite
-        run: |
-          echo "VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}" >> $GITHUB_ENV
-          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> $GITHUB_ENV
-
       - name: Build
         run: npm run build
+        env:
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
