@@ -6,6 +6,9 @@
 // セッション有効期限（24時間）
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
 
+// 開発用デフォルトパスワード
+const DEFAULT_DEV_PASSWORD = 'dev-password-123';
+
 // セッションIDを生成
 function generateSessionId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(32)))
@@ -219,20 +222,9 @@ async function handleLogin(request, env, corsHeaders) {
     const { password } = body;
 
     // 環境変数からパスワードを取得（シークレットとして設定）
-    // パスワードは wrangler secret put PASSWORD で設定してください
-    if (!env.PASSWORD) {
-      return new Response(
-        JSON.stringify({ error: 'Configuration error', message: 'パスワードが設定されていません' }),
-        {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-            ...corsHeaders,
-          },
-        }
-      );
-    }
-    const correctPassword = env.PASSWORD;
+    // 未設定の場合は開発用デフォルト値を利用する
+    const configuredPassword = env.PASSWORD && env.PASSWORD.trim();
+    const correctPassword = configuredPassword || DEFAULT_DEV_PASSWORD;
 
     if (password !== correctPassword) {
       return new Response(

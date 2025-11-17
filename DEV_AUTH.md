@@ -129,5 +129,8 @@ wrangler secret put PASSWORD
 
 開発用のデフォルトパスワードは `dev-password-123` です。
 
+- Workers 側で `PASSWORD` が未設定の場合、自動的にこの値が使用されます。
+- `wrangler secret put PASSWORD` で任意の値を入れると、即座にそちらが優先されます。
+
 **重要**: 本番環境では必ず変更してください！
 
