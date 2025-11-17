@@ -59,6 +59,17 @@ export async function login(password) {
       body: JSON.stringify({ password }),
     });
 
+    // レスポンスがJSONかどうか確認
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text();
+      console.error('Non-JSON response:', text);
+      return {
+        success: false,
+        message: 'サーバーエラーが発生しました',
+      };
+    }
+
     const data = await response.json();
 
     if (!response.ok) {
