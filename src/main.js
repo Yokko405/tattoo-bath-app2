@@ -45,10 +45,15 @@ class TattooBathApp {
     try {
       // Check authentication if API is configured
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-      
+
+      // デバッグ出力: フロントで読み込まれている API ベースURL
+      console.log('[debug] VITE_API_BASE_URL =', apiBaseUrl);
+
       // API URLが設定されている場合のみ認証チェック
       if (apiBaseUrl && apiBaseUrl.startsWith('http')) {
+        console.log('[debug] Calling checkAuthStatus()...');
         const isAuthenticated = await checkAuthStatus();
+        console.log('[debug] checkAuthStatus result =', isAuthenticated);
         if (!isAuthenticated) {
           this.showLoginModal();
           return;

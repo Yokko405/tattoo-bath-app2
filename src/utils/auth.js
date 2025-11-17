@@ -17,6 +17,9 @@ if (API_BASE_URL && !API_BASE_URL.startsWith('http://') && !API_BASE_URL.startsW
   API_BASE_URL = '';
 }
 
+// デバッグ出力: ビルド時に読み込まれているAPIベースURL
+console.log('[debug][auth] API_BASE_URL =', API_BASE_URL);
+
 /**
  * Check if user is authenticated
  * @returns {Promise<boolean>}
@@ -24,18 +27,27 @@ if (API_BASE_URL && !API_BASE_URL.startsWith('http://') && !API_BASE_URL.startsW
 export async function checkAuthStatus() {
   try {
     if (!API_BASE_URL) {
+      console.log('[debug][auth] checkAuthStatus skipped: API_BASE_URL not set');
       return false;
     }
-    const response = await fetch(`${API_BASE_URL}/api/auth/status`, {
+    const statusUrl = `${API_BASE_URL}/api/auth/status`;
+    console.log('[debug][auth] fetching auth status from', statusUrl);
+    const response = await fetch(statusUrl, {
       method: 'GET',
       credentials: 'include',
     });
-    
+
+    console.log('[debug][auth] status response status =', response.status);
     if (!response.ok) {
+      try {
+        const text = await response.text();
+        console.log('[debug][auth] status response body (non-ok) =', text);
+      } catch (e) {}
       return false;
     }
-    
+
     const data = await response.json();
+    console.log('[debug][auth] status response json =', data);
     return data.authenticated === true;
   } catch (error) {
     console.error('Auth status check failed:', error);
@@ -56,7 +68,9 @@ export async function login(password) {
         message: 'API URLが設定されていません',
       };
     }
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    const loginUrl = `${API_BASE_URL}/api/auth/login`;
+    console.log('[debug][auth] POST login to', loginUrl);
+    const response = await fetch(loginUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,6 +78,8 @@ export async function login(password) {
       credentials: 'include',
       body: JSON.stringify({ password }),
     });
+
+    console.log('[debug][auth] login response status =', response.status);
 
     // レスポンスがJSONかどうか確認
     const contentType = response.headers.get('content-type');
@@ -85,6 +101,7 @@ export async function login(password) {
       };
     }
 
+    console.log('[debug][auth] login response json =', data);
     return {
       success: true,
       message: data.message || 'ログイン成功',

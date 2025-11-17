@@ -69,13 +69,22 @@ export default {
     const origin = request.headers.get('Origin');
     const allowedOrigins = [
       'http://localhost:3000',
+      'http://localhost:3001',
       'http://localhost:5173',
       'http://127.0.0.1:3000',
       'http://127.0.0.1:5173',
       'https://yokko405.github.io',
       'https://Yokko405.github.io',
     ];
-    const allowedOrigin = allowedOrigins.includes(origin) ? origin : '*';
+
+    // 開発環境では localhost/127.0.0.1 の任意ポートを許可する（credentials を伴うリクエストはワイルドカード不可なため）
+    let allowedOrigin = '*';
+    if (origin) {
+      const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+      if (allowedOrigins.includes(origin) || localhostPattern.test(origin)) {
+        allowedOrigin = origin;
+      }
+    }
 
     // CORS headers
     const corsHeaders = {
@@ -218,6 +227,8 @@ async function handleFacilityByIdRequest(id, env, corsHeaders) {
 async function handleLogin(request, env, corsHeaders) {
   try {
     const url = new URL(request.url);
+    // リクエストのオリジンをここで取得（fetch内の変数はこのスコープでは参照できないため）
+    const origin = request.headers.get('Origin');
     const body = await request.json();
     const { password } = body;
 
