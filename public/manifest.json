@@ -1,0 +1,14 @@
+{
+  "name": "タトゥーOK温泉・銭湯検索",
+  "short_name": "タトゥーOK温泉",
+  "description": "全国のタトゥーOKな温泉・銭湯を簡単検索",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [],
+  "categories": ["lifestyle", "travel"],
+  "lang": "ja",
+  "dir": "ltr"
+}

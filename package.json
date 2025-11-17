@@ -1,0 +1,16 @@
+{
+  "name": "tattoo-bath-app",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "タトゥーOKな温泉・銭湯検索アプリ",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {}
+}

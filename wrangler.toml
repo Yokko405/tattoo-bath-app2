@@ -1,0 +1,21 @@
+name = "tattoo-bath-app"
+main = "workers/facilities-api.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespaces（開発段階では不要）
+# 本番環境でセッション管理を強化する場合のみ使用
+# [[kv_namespaces]]
+# binding = "SESSIONS_KV"
+# id = "your-sessions-kv-namespace-id"
+
+# 環境変数（開発環境用）
+# パスワードは .dev.vars ファイルに設定（.gitignoreで保護されています）
+# 本番環境では wrangler secret put PASSWORD でシークレットとして設定
+# [vars]
+# PASSWORD = "..."  # ここには設定しない（.dev.varsを使用）
+
+# Routes configuration
+# [env.production]
+# routes = [
+#   { pattern = "yourdomain.com/api/*", zone_name = "yourdomain.com" }
+# ]
