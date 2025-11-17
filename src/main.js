@@ -19,7 +19,7 @@ import {
 
 import { getFavorites } from './utils/storage.js';
 import { getCurrentLocation, sortByDistance } from './utils/geo.js';
-import { checkAuthStatus } from './utils/auth.js';
+import { checkAuthStatus, logout } from './utils/auth.js';
 
 import './styles/main.css';
 
@@ -66,6 +66,9 @@ class TattooBathApp {
         appElement.classList.add('authenticated');
       }
 
+      // ログアウトボタン表示制御
+      this.setupLogoutButton();
+
       // Show loading
       this.showLoading();
 
@@ -109,6 +112,34 @@ class TattooBathApp {
       await this.init();
     });
     this.loginModal.show();
+  }
+
+  setupLogoutButton() {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (!logoutBtn) return;
+
+    // 表示制御: #app に .authenticated があれば表示
+    const appElement = document.getElementById('app');
+    if (appElement && appElement.classList.contains('authenticated')) {
+      logoutBtn.style.display = 'inline-block';
+    } else {
+      logoutBtn.style.display = 'none';
+    }
+
+    // クリックハンドラ
+    logoutBtn.onclick = async (e) => {
+      e.preventDefault();
+      try {
+        const result = await logout();
+        console.log('logout result', result);
+      } catch (err) {
+        console.error('Logout failed', err);
+      }
+
+      // Hide app and show login modal
+      if (appElement) appElement.classList.remove('authenticated');
+      this.showLoginModal();
+    };
   }
 
   initializeComponents(prefectures, tags) {
