@@ -244,9 +244,11 @@ async function handleLogin(request, env, corsHeaders) {
     const hashedSessionId = await hashSessionId(sessionId);
 
     // セッションCookieを設定（開発用：KVストア不要）
-    // 本番環境ではSecureフラグを有効にしてください
+    // クロスオリジンリクエストの場合はSameSite=NoneとSecureが必要
     const isSecure = url.protocol === 'https:';
-    const cookie = `session=${hashedSessionId}; HttpOnly; ${isSecure ? 'Secure;' : ''} SameSite=Lax; Max-Age=${Math.floor(SESSION_DURATION / 1000)}; Path=/`;
+    const isCrossOrigin = origin && !origin.includes(url.hostname);
+    const sameSite = isCrossOrigin && isSecure ? 'SameSite=None' : 'SameSite=Lax';
+    const cookie = `session=${hashedSessionId}; HttpOnly; ${isSecure ? 'Secure;' : ''} ${sameSite}; Max-Age=${Math.floor(SESSION_DURATION / 1000)}; Path=/`;
 
     return new Response(
       JSON.stringify({ success: true, message: 'ログイン成功' }),
