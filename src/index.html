@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="タトゥーOKな温泉・銭湯を検索できるアプリ。全国の刺青フレンドリーな施設を地図で探せます。" />
   <meta name="keywords" content="タトゥー,刺青,温泉,銭湯,サウナ,tattoo,friendly,japan" />
+  <!-- Cache busting for GitHub Pages -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
   <!-- OGP Tags -->
   <meta property="og:title" content="タトゥーOK温泉・銭湯検索" />
@@ -86,6 +90,37 @@
   <!-- Login Modal Container (moved outside #app so it can show when app is hidden) -->
   <div id="login-modal-container"></div>
 
+  <script>
+    console.log('[debug] index.html loaded, about to load main.js');
+    
+    // Unregister all service workers immediately
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        registrations.forEach((registration) => {
+          registration.unregister().then(() => {
+            console.log('[init] Service Worker unregistered');
+            // Clear all caches
+            caches.keys().then((cacheNames) => {
+              cacheNames.forEach((cacheName) => {
+                caches.delete(cacheName).then(() => {
+                  console.log('[init] Deleted cache:', cacheName);
+                });
+              });
+            });
+          });
+        });
+      });
+    }
+
+    // Force cache busting by adding timestamp to script src
+    const mainScript = document.querySelector('script[type="module"]');
+    if (mainScript && mainScript.src) {
+      const timestamp = new Date().getTime();
+      const separator = mainScript.src.includes('?') ? '&' : '?';
+      mainScript.src = mainScript.src + separator + 'v=' + timestamp;
+      console.log('[init] Applied cache busting to main script');
+    }
+  </script>
   <script type="module" src="/main.js"></script>
 </body>
 </html>

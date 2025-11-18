@@ -133,3 +133,43 @@ export function savePreferences(preferences) {
     return false;
   }
 }
+
+/**
+ * Session token management for authentication
+ * iOS Safari ではクロスオリジン Cookie がブロックされるため、
+ * セッショントークンをセッションストレージに保存する
+ */
+const SESSION_TOKEN_KEY = 'tattoo-bath-session-token';
+
+export function setSessionToken(token) {
+  try {
+    sessionStorage.setItem(SESSION_TOKEN_KEY, token);
+    console.log('[debug][storage] Session token saved');
+    return true;
+  } catch (error) {
+    console.error('Failed to save session token:', error);
+    return false;
+  }
+}
+
+export function getSessionToken() {
+  try {
+    const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
+    console.log('[debug][storage] Retrieved session token:', token ? 'exists' : 'not found');
+    return token;
+  } catch (error) {
+    console.error('Failed to get session token:', error);
+    return null;
+  }
+}
+
+export function clearSessionToken() {
+  try {
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    console.log('[debug][storage] Session token cleared');
+    return true;
+  } catch (error) {
+    console.error('Failed to clear session token:', error);
+    return false;
+  }
+}

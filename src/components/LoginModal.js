@@ -80,32 +80,49 @@ export class LoginModal {
     const password = passwordInput.value;
     const submitBtn = form.querySelector('.login-submit-btn');
 
+    console.log('[LoginModal] handleLogin called with password length:', password.length);
+
     // Show loading state
     submitBtn.disabled = true;
     submitBtn.textContent = 'ログイン中...';
     errorDiv.style.display = 'none';
 
     try {
+      console.log('[LoginModal] importing auth.js...');
       const { login } = await import('../utils/auth.js');
+      console.log('[LoginModal] calling login function...');
       const result = await login(password);
+      console.log('[LoginModal] login result:', result);
 
       if (result.success) {
+        console.log('[LoginModal] login successful, hiding modal');
+        passwordInput.value = ''; // パスワード入力をクリア
         this.hide();
         if (this.onLoginSuccess) {
+          console.log('[LoginModal] calling onLoginSuccess callback');
           this.onLoginSuccess();
         }
       } else {
+        console.log('[LoginModal] login failed:', result.message);
         errorDiv.textContent = result.message || 'パスワードが正しくありません';
         errorDiv.style.display = 'block';
         passwordInput.focus();
       }
     } catch (error) {
-      console.error('Login error:', error);
-      errorDiv.textContent = 'ログインに失敗しました。もう一度お試しください。';
+      console.error('[LoginModal] Login error:', error);
+      console.error('[LoginModal] Error details:', {
+        message: error.message,
+        stack: error.stack,
+        error: error
+      });
+      errorDiv.textContent = `ログインに失敗しました: ${error.message}`;
       errorDiv.style.display = 'block';
     } finally {
+      console.log('[LoginModal] finally block, resetting button state');
       submitBtn.disabled = false;
       submitBtn.textContent = 'ログイン';
+      // パスワード入力をフォーカス
+      passwordInput.focus();
     }
   }
 }

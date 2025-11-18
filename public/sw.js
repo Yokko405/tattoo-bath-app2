@@ -2,23 +2,25 @@
  * Service Worker for PWA offline support
  */
 
-const CACHE_NAME = 'tattoo-bath-app-v1';
+// キャッシュバージョンを上げて、古いキャッシュを強制削除
+const CACHE_VERSION = 'v' + new Date().getTime(); // タイムスタンプで毎回新しいバージョン
+const CACHE_NAME = `tattoo-bath-app-${CACHE_VERSION}`;
 
 // Install event - skip precaching to avoid path issues
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing...');
+  console.log('Service Worker: Installing...', CACHE_NAME);
   self.skipWaiting();
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating...');
+  console.log('Service Worker: Activating...', CACHE_NAME);
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME)
+          .filter((name) => !name.includes(CACHE_VERSION))
           .map((name) => {
             console.log('Service Worker: Deleting old cache:', name);
             return caches.delete(name);
@@ -41,6 +43,12 @@ self.addEventListener('fetch', (event) => {
 
   // Skip external requests (Google Maps API, etc.)
   if (!request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
+  // Skip API requests - always fetch from network
+  if (request.url.includes('/api/')) {
+    event.respondWith(fetch(request));
     return;
   }
 

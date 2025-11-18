@@ -9,8 +9,21 @@ export default defineConfig({
   build: {
     outDir: '../dist',
     emptyOutDir: true,
+    // タイムスタンプを含めて確実にハッシュを変える
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name]-${Date.now()}-[hash].js`,
+        chunkFileNames: `assets/[name]-${Date.now()}-[hash].js`,
+        assetFileNames: `assets/[name]-${Date.now()}-[hash][extname]`
+      }
+    }
   },
   server: {
     port: 3000,
+    hmr: {
+      host: '192.168.68.54',
+      port: 3000,
+      protocol: 'ws',
+    },
   },
 });

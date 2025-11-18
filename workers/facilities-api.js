@@ -6,9 +6,6 @@
 // セッション有効期限（24時間）
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
 
-// 開発用デフォルトパスワード
-const DEFAULT_DEV_PASSWORD = 'dev-password-123';
-
 // セッションIDを生成
 function generateSessionId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(32)))
@@ -77,21 +74,36 @@ export default {
       'https://Yokko405.github.io',
     ];
 
-    // 開発環境では localhost/127.0.0.1 の任意ポートを許可する（credentials を伴うリクエストはワイルドカード不可なため）
+    // 認証エンドポイント（/api/auth/）でのCORS処理
+    // - Originヘッダーがあればそれに対応、なければワイルドカード（*）を使用
+    // - スマートフォン（特にSafari）ではOriginヘッダーが送信されないことがあるため、オプショナル対応
+    const isAuthEndpoint = url.pathname.startsWith('/api/auth/');
+    
     let allowedOrigin = '*';
+    let credentialsAllowed = false;
+    
     if (origin) {
       const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
       if (allowedOrigins.includes(origin) || localhostPattern.test(origin)) {
         allowedOrigin = origin;
+        credentialsAllowed = true;
       }
     }
+    
+    // デバッグログ
+    console.log(`[API] Method: ${request.method}, Path: ${url.pathname}, Origin: ${origin || 'none'}`);
+    
+    // 認証エンドポイントではOriginヘッダーがない場合でもリクエストを許可（スマートフォン対応）
+    // Originがない場合はワイルドカード（*）で対応
 
     // CORS headers
+    // 認証エンドポイント：Originがあれば指定、なければワイルドカード
+    // その他：設定されたallowedOriginを使用
     const corsHeaders = {
-      'Access-Control-Allow-Origin': allowedOrigin,
+      'Access-Control-Allow-Origin': isAuthEndpoint ? (origin && allowedOrigin !== '*' ? allowedOrigin : '*') : allowedOrigin,
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Credentials': allowedOrigin !== '*' ? 'true' : 'false',
+      'Access-Control-Allow-Credentials': (isAuthEndpoint || credentialsAllowed) && allowedOrigin !== '*' ? 'true' : 'false',
     };
 
     // Handle OPTIONS request for CORS
@@ -221,23 +233,36 @@ async function handleFacilityByIdRequest(id, env, corsHeaders) {
   }
 }
 
-/**
- * Handle login request
- */
 async function handleLogin(request, env, corsHeaders) {
   try {
     const url = new URL(request.url);
-    // リクエストのオリジンをここで取得（fetch内の変数はこのスコープでは参照できないため）
+    // リクエストのオリジンをここで取得
     const origin = request.headers.get('Origin');
     const body = await request.json();
     const { password } = body;
 
+    console.log(`[Login] Origin: ${origin || 'none'}, Password: ${password ? 'provided' : 'missing'}`);
+
     // 環境変数からパスワードを取得（シークレットとして設定）
-    // 未設定の場合は開発用デフォルト値を利用する
-    const configuredPassword = env.PASSWORD && env.PASSWORD.trim();
-    const correctPassword = configuredPassword || DEFAULT_DEV_PASSWORD;
+    // シークレットが未設定の場合はエラーを返す
+    if (!env.PASSWORD || !env.PASSWORD.trim()) {
+      console.error('PASSWORD secret is not configured');
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error', message: 'サーバーの設定に問題があります' }),
+        {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            ...corsHeaders,
+          },
+        }
+      );
+    }
+
+    const correctPassword = env.PASSWORD.trim();
 
     if (password !== correctPassword) {
+      console.log(`[Login] Password mismatch`);
       return new Response(
         JSON.stringify({ error: 'Invalid password', message: 'パスワードが正しくありません' }),
         {
@@ -250,16 +275,33 @@ async function handleLogin(request, env, corsHeaders) {
       );
     }
 
+    console.log(`[Login] Password matched, generating session`);
+
     // セッションIDを生成してハッシュ化
     const sessionId = generateSessionId();
     const hashedSessionId = await hashSessionId(sessionId);
 
-    // セッションCookieを設定（開発用：KVストア不要）
-    // クロスオリジンリクエストの場合はSameSite=NoneとSecureが必要
+    // セッションCookieを設定
+    // GitHub Pages（HTTPS）からのリクエストに対応するため、SameSite=None; Secure を設定
+    // スマートフォン（Safari/Chrome）でも動作するようにCookie設定を調整
     const isSecure = url.protocol === 'https:';
-    const isCrossOrigin = origin && !origin.includes(url.hostname);
-    const sameSite = isCrossOrigin && isSecure ? 'SameSite=None' : 'SameSite=Lax';
-    const cookie = `session=${hashedSessionId}; HttpOnly; ${isSecure ? 'Secure;' : ''} ${sameSite}; Max-Age=${Math.floor(SESSION_DURATION / 1000)}; Path=/`;
+    
+    // Cookieの属性を配列で組み立てる
+    const cookieParts = [`session=${hashedSessionId}`];
+    cookieParts.push('HttpOnly');
+    if (isSecure) {
+      cookieParts.push('Secure');
+      // クロスオリジン（GitHub Pages）でも動作するようにSameSite=Noneを設定
+      // ただしSecureと一緒に設定する必要がある
+      cookieParts.push('SameSite=None');
+    } else {
+      cookieParts.push('SameSite=Lax');
+    }
+    cookieParts.push(`Max-Age=${Math.floor(SESSION_DURATION / 1000)}`);
+    cookieParts.push('Path=/');
+    const cookie = cookieParts.join('; ');
+
+    console.log(`[Login] Setting cookie: ${cookieParts.join('; ')}`);
 
     return new Response(
       JSON.stringify({ success: true, message: 'ログイン成功' }),
@@ -272,7 +314,7 @@ async function handleLogin(request, env, corsHeaders) {
       }
     );
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('[Login] Error:', error);
     return new Response(
       JSON.stringify({ error: 'Login failed', message: 'ログインに失敗しました' }),
       {
@@ -295,10 +337,21 @@ async function handleLogout(request, env, corsHeaders) {
     const origin = request.headers.get('Origin');
     const isSecure = url.protocol === 'https:';
     const isCrossOrigin = origin && !origin.includes(url.hostname);
-    const sameSite = isCrossOrigin && isSecure ? 'SameSite=None' : 'SameSite=Lax';
     
-    // セッションCookieを削除（開発用：KVストア不要）
-    const cookie = `session=; HttpOnly; ${isSecure ? 'Secure;' : ''} ${sameSite}; Max-Age=0; Path=/`;
+    // Cookieの削除属性を配列で組み立てる
+    const cookieParts = ['session='];
+    cookieParts.push('HttpOnly');
+    if (isSecure) {
+      cookieParts.push('Secure');
+      if (isCrossOrigin) {
+        cookieParts.push('SameSite=None');
+      } else {
+        cookieParts.push('SameSite=Lax');
+      }
+    }
+    cookieParts.push('Max-Age=0');
+    cookieParts.push('Path=/');
+    const cookie = cookieParts.join('; ');
 
     return new Response(
       JSON.stringify({ success: true, message: 'ログアウト成功' }),

@@ -47,14 +47,17 @@ class TattooBathApp {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
       // デバッグ出力: フロントで読み込まれている API ベースURL
-      console.log('[debug] VITE_API_BASE_URL =', apiBaseUrl);
+      console.log('[init] VITE_API_BASE_URL =', apiBaseUrl);
+      console.log('[init] Current cookies:', document.cookie);
 
       // API URLが設定されている場合のみ認証チェック
       if (apiBaseUrl && apiBaseUrl.startsWith('http')) {
-        console.log('[debug] Calling checkAuthStatus()...');
+        console.log('[init] Calling checkAuthStatus()...');
         const isAuthenticated = await checkAuthStatus();
-        console.log('[debug] checkAuthStatus result =', isAuthenticated);
+        console.log('[init] checkAuthStatus result =', isAuthenticated);
+        console.log('[init] Cookies after checkAuthStatus:', document.cookie);
         if (!isAuthenticated) {
+          console.log('[init] Not authenticated, showing login modal');
           this.showLoginModal();
           return;
         }
@@ -325,21 +328,21 @@ window.showFacilityDetail = async (facilityId) => {
   }
 };
 
-// Register Service Worker for PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register(import.meta.env.BASE_URL + 'sw.js')
-      .then((registration) => {
-        console.log('Service Worker registered:', registration);
-      })
-      .catch((error) => {
-        console.log('Service Worker registration failed:', error);
-      });
-  });
-}
+// Service Worker は使用しない（キャッシュが古い状態を保持するため）
+// PWA機能が必要になった場合は後で再度有効化
+console.log('[init] Service Worker registration disabled');
 
 // Initialize app when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+console.log('[init] main.js loaded, setting up DOMContentLoaded listener');
+
+if (document.readyState === 'loading') {
+  // DOM is still loading
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('[init] DOMContentLoaded fired, initializing app');
+    window.app = new TattooBathApp();
+  });
+} else {
+  // DOM is already loaded
+  console.log('[init] DOM already loaded, initializing app immediately');
   window.app = new TattooBathApp();
-});
+}
