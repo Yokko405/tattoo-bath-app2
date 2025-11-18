@@ -1,0 +1,18 @@
+# GitHub Pages configuration for cache busting
+timezone: Asia/Tokyo
+
+# Exclude files from Jekyll processing
+exclude:
+  - .env*
+  - node_modules
+  - dist
+  - src
+  - package.json
+  - vite.config.js
+  - wrangler.toml
+
+# Set the markdown processor
+markdown: kramdown
+
+# Force no caching
+future: true
