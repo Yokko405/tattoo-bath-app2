@@ -1,14 +1,4 @@
 {
-  "version": "2025-11-18",
-  "lastUpdated": "2025-11-18T00:00:00Z",
-  "dataSource": "Claude調査：関東圏タトゥーOK温浴施設56施設（公式サイト・信頼できる情報源確認済み）",
-  "totalFacilities": 56,
-  "coverage": "関東圏7都県（東京、千葉、神奈川、埼玉、群馬、茨城）",
-  "categories": {
-    "全面OK": 18,
-    "カバーシール対応": 28,
-    "条件付きOK": 10
-  },
   "facilities": [
     {
       "id": "fac-025",
