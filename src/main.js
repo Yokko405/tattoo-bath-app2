@@ -28,6 +28,10 @@ class TattooBathApp {
     console.log('[APP] Initializing TattooBathApp...');
     console.log('[APP] User agent:', navigator.userAgent);
     console.log('[APP] Geolocation supported:', !!navigator.geolocation);
+    console.log('[APP] Display mode:', navigator.standalone ? 'standalone' : 'browser');
+    console.log('[APP] Current URL:', window.location.href);
+    console.log('[APP] Current pathname:', window.location.pathname);
+    console.log('[APP] Document ready state:', document.readyState);
     
     this.allFacilities = [];
     this.displayedFacilities = [];
@@ -111,6 +115,16 @@ class TattooBathApp {
   }
 
   registerServiceWorker() {
+    // Service Worker registration might cause 404 on iOS PWA standalone mode
+    // Only register in browser mode for now
+    const isStandalone = window.navigator.standalone === true;
+    console.log('[SW] Standalone mode:', isStandalone);
+
+    if (isStandalone) {
+      console.log('[SW] Skipping Service Worker in standalone mode (iOS PWA)');
+      return;
+    }
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/tattoo-bath-app2/sw.js', {
         scope: '/tattoo-bath-app2/',
