@@ -55,11 +55,12 @@ export async function searchFacilities(keyword) {
 
   const lowerKeyword = keyword.toLowerCase();
   return facilities.filter(f =>
-    f.name.toLowerCase().includes(lowerKeyword) ||
-    f.prefecture.toLowerCase().includes(lowerKeyword) ||
-    f.city.toLowerCase().includes(lowerKeyword) ||
-    f.address.toLowerCase().includes(lowerKeyword) ||
-    f.description.toLowerCase().includes(lowerKeyword)
+    (f.name && f.name.toLowerCase().includes(lowerKeyword)) ||
+    (f.prefecture && f.prefecture.toLowerCase().includes(lowerKeyword)) ||
+    (f.city && f.city.toLowerCase().includes(lowerKeyword)) ||
+    (f.address && f.address.toLowerCase().includes(lowerKeyword)) ||
+    (f.description && f.description.toLowerCase().includes(lowerKeyword)) ||
+    (f.tags && f.tags.some(tag => tag.toLowerCase().includes(lowerKeyword)))
   );
 }
 
