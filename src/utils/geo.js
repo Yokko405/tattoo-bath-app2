@@ -44,71 +44,38 @@ function toRadians(degrees) {
 export function getCurrentLocation() {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error('Geolocation is not supported by this browser'));
+      const error = 'Geolocation is not supported by this browser';
+      console.error('[GEO]', error);
+      reject(new Error(error));
       return;
     }
 
-    // Use watchPosition for better accuracy and multiple readings
-    let bestPosition = null;
-    let positions = [];
-    const maxReadings = 5; // Collect up to 5 readings and use the most accurate
-    let timeoutId;
+    console.log('[GEO] Starting location acquisition...');
 
-    const handlePosition = (position) => {
-      positions.push(position);
-      
-      // Use position with best (lowest) accuracy
-      if (!bestPosition || position.coords.accuracy < bestPosition.coords.accuracy) {
-        bestPosition = position;
-      }
-
-      // If we have enough readings or got a very accurate one, resolve
-      if (positions.length >= maxReadings || bestPosition.coords.accuracy < 20) {
-        clearTimeout(timeoutId);
-        watchId && navigator.geolocation.clearWatch(watchId);
-        resolve({
-          lat: bestPosition.coords.latitude,
-          lng: bestPosition.coords.longitude,
-          accuracy: bestPosition.coords.accuracy,
+    // Try getCurrentPosition first for faster response on mobile
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log('[GEO] getCurrentPosition success:', {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          accuracy: position.coords.accuracy,
         });
-      }
-    };
-
-    const handleError = (error) => {
-      clearTimeout(timeoutId);
-      watchId && navigator.geolocation.clearWatch(watchId);
-      
-      // If we got at least one reading, use it despite error
-      if (bestPosition) {
         resolve({
-          lat: bestPosition.coords.latitude,
-          lng: bestPosition.coords.longitude,
-          accuracy: bestPosition.coords.accuracy,
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          accuracy: position.coords.accuracy,
         });
-      } else {
+      },
+      (error) => {
+        console.error('[GEO] getCurrentPosition error:', error.code, error.message);
         reject(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000, // 10 seconds for mobile
+        maximumAge: 0,
       }
-    };
-
-    let watchId = navigator.geolocation.watchPosition(handlePosition, handleError, {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    });
-
-    // Timeout after 6 seconds
-    timeoutId = setTimeout(() => {
-      navigator.geolocation.clearWatch(watchId);
-      if (bestPosition) {
-        resolve({
-          lat: bestPosition.coords.latitude,
-          lng: bestPosition.coords.longitude,
-          accuracy: bestPosition.coords.accuracy,
-        });
-      } else {
-        reject(new Error('Timeout getting current location'));
-      }
-    }, 6000);
+    );
   });
 }
 

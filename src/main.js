@@ -25,6 +25,10 @@ import './styles/main.css';
 
 class TattooBathApp {
   constructor() {
+    console.log('[APP] Initializing TattooBathApp...');
+    console.log('[APP] User agent:', navigator.userAgent);
+    console.log('[APP] Geolocation supported:', !!navigator.geolocation);
+    
     this.allFacilities = [];
     this.displayedFacilities = [];
     this.currentFilters = {
@@ -233,7 +237,9 @@ class TattooBathApp {
   async searchNearby() {
     try {
       this.showLoading('現在地を取得中...');
+      console.log('[APP] searchNearby started');
       const location = await getCurrentLocation();
+      console.log('[APP] Location obtained:', location);
       this.userLocation = location;
 
       // Sort by distance
@@ -244,13 +250,26 @@ class TattooBathApp {
 
       // Center map on user location with accuracy circle
       if (this.mapView) {
+        console.log('[APP] Centering map on user location');
         this.mapView.centerOnLocation(location.lat, location.lng, 12, location.accuracy);
       }
 
       this.hideLoading();
     } catch (error) {
-      console.error('Failed to get location:', error);
-      this.showError('現在地の取得に失敗しました。位置情報の許可を確認してください。');
+      console.error('[APP] Failed to get location:', error);
+      let errorMsg = '現在地の取得に失敗しました。';
+      
+      if (error.code === 1) {
+        errorMsg = '位置情報へのアクセスが許可されていません。\nブラウザの設定で位置情報を許可してください。';
+      } else if (error.code === 2) {
+        errorMsg = '位置情報が取得できません。\nGPSが有効か確認してください。';
+      } else if (error.code === 3) {
+        errorMsg = '位置情報の取得がタイムアウトしました。\nもう一度お試しください。';
+      } else if (error.message && error.message.includes('not supported')) {
+        errorMsg = 'このブラウザは位置情報に対応していません。';
+      }
+      
+      this.showError(errorMsg);
       this.hideLoading();
     }
   }

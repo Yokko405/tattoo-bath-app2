@@ -20,7 +20,7 @@ export class SearchBar {
           autocomplete="off"
         />
         <button id="search-btn" class="search-btn">検索</button>
-        <button id="current-location-btn" class="location-btn" title="現在地から探す">
+        <button id="current-location-btn" class="location-btn" title="現在地から探す（位置情報の許可が必要です）">
           <span class="location-icon">📍</span>
         </button>
       </div>
