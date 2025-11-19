@@ -101,9 +101,28 @@ class TattooBathApp {
 
       // Hide loading
       this.hideLoading();
+
+      // Register Service Worker for PWA offline support
+      this.registerServiceWorker();
     } catch (error) {
       console.error('Failed to initialize app:', error);
       this.showError('アプリケーションの初期化に失敗しました。');
+    }
+  }
+
+  registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/tattoo-bath-app2/sw.js', {
+        scope: '/tattoo-bath-app2/',
+      })
+        .then((registration) => {
+          console.log('[SW] Service Worker registered:', registration);
+        })
+        .catch((error) => {
+          console.warn('[SW] Service Worker registration failed:', error);
+        });
+    } else {
+      console.warn('[SW] Service Worker not supported in this browser');
     }
   }
 

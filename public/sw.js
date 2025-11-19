@@ -5,16 +5,17 @@
 // キャッシュバージョンを上げて、古いキャッシュを強制削除
 const CACHE_VERSION = 'v' + new Date().getTime(); // タイムスタンプで毎回新しいバージョン
 const CACHE_NAME = `tattoo-bath-app-${CACHE_VERSION}`;
+const BASE_PATH = '/tattoo-bath-app2';
 
 // Install event - skip precaching to avoid path issues
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing...', CACHE_NAME);
+  console.log('[SW] Installing...', CACHE_NAME);
   self.skipWaiting();
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating...', CACHE_NAME);
+  console.log('[SW] Activating...', CACHE_NAME);
 
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -22,7 +23,7 @@ self.addEventListener('activate', (event) => {
         cacheNames
           .filter((name) => !name.includes(CACHE_VERSION))
           .map((name) => {
-            console.log('Service Worker: Deleting old cache:', name);
+            console.log('[SW] Deleting old cache:', name);
             return caches.delete(name);
           })
       );
