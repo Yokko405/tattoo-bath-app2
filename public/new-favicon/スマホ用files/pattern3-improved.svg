@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="butterflyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E85D4A;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#C44536;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="onsenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.95"/>
+      <stop offset="100%" style="stop-color:#4A90E2;stop-opacity:0.9"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景円（深い藍） -->
+  <circle cx="32" cy="32" r="32" fill="#1A3A5C"/>
+  
+  <!-- 蝶のシルエット（大きく配置） -->
+  <g transform="translate(32, 32)">
+    <!-- 左上の羽（大胆に） -->
+    <path d="M -6,-4 C -16,-10 -24,-8 -26,0 C -26,6 -20,10 -12,8 C -8,6 -6,0 -6,-4 Z" 
+          fill="url(#butterflyGrad)"/>
+    
+    <!-- 右上の羽（大胆に） -->
+    <path d="M 6,-4 C 16,-10 24,-8 26,0 C 26,6 20,10 12,8 C 8,6 6,0 6,-4 Z" 
+          fill="url(#butterflyGrad)"/>
+    
+    <!-- 左下の羽（大きく） -->
+    <path d="M -6,2 C -14,8 -20,14 -22,22 C -20,28 -14,30 -8,26 C -6,20 -6,10 -6,2 Z" 
+          fill="url(#butterflyGrad)" opacity="0.9"/>
+    
+    <!-- 右下の羽（大きく） -->
+    <path d="M 6,2 C 14,8 20,14 22,22 C 20,28 14,30 8,26 C 6,20 6,10 6,2 Z" 
+          fill="url(#butterflyGrad)" opacity="0.9"/>
+    
+    <!-- 蝶の体（太く、短く） -->
+    <ellipse cx="0" cy="6" rx="4" ry="20" fill="#FFFFFF" opacity="0.95"/>
+    <ellipse cx="0" cy="6" rx="2.5" ry="19" fill="#1A3A5C"/>
+    
+    <!-- ♨マークを体の中に統合（大きく、見やすく） -->
+    <g transform="translate(0, 4) scale(1.2)">
+      <!-- 左の湯気 -->
+      <path d="M -4,-2 Q -4,-6 -2,-8" 
+            stroke="url(#onsenGrad)" 
+            stroke-width="2" 
+            fill="none" 
+            stroke-linecap="round"/>
+      <!-- 中央の湯気 -->
+      <path d="M 0,-2 Q 0,-7 1.5,-9" 
+            stroke="url(#onsenGrad)" 
+            stroke-width="2.5" 
+            fill="none" 
+            stroke-linecap="round"/>
+      <!-- 右の湯気 -->
+      <path d="M 4,-2 Q 4,-6 2,-8" 
+            stroke="url(#onsenGrad)" 
+            stroke-width="2" 
+            fill="none" 
+            stroke-linecap="round"/>
+    </g>
+    
+    <!-- 頭部（シンプルに） -->
+    <circle cx="0" cy="-12" r="4" fill="#FFFFFF" opacity="0.95"/>
+    <circle cx="0" cy="-12" r="3" fill="#1A3A5C"/>
+    
+    <!-- 触角（短く太く） -->
+    <path d="M -2,-14 L -4,-18" 
+          stroke="#FFFFFF" 
+          stroke-width="2" 
+          fill="none" 
+          stroke-linecap="round"/>
+    <path d="M 2,-14 L 4,-18" 
+          stroke="#FFFFFF" 
+          stroke-width="2" 
+          fill="none" 
+          stroke-linecap="round"/>
+    
+    <!-- 触角の先端（アクセント） -->
+    <circle cx="-4" cy="-18" r="1.5" fill="#E85D4A"/>
+    <circle cx="4" cy="-18" r="1.5" fill="#E85D4A"/>
+  </g>
+</svg>

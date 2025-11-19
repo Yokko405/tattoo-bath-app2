@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📱 iPhone対応ガイド - タトゥーOK温泉アプリ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1A3A5C 0%, #2C2C2C 100%);
+            color: #fff;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #E85D4A, #FFB7C5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+        
+        .preview-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .preview-section h2 {
+            color: #E85D4A;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        
+        .icon-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        
+        .icon-item {
+            text-align: center;
+        }
+        
+        .icon-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .icon-wrapper img {
+            display: block;
+            border-radius: 15px;
+        }
+        
+        .icon-label {
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .code-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-section h2 {
+            color: #4A90E2;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .code-block {
+            background: #1A1A1A;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block code {
+            color: #4A90E2;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            white-space: pre;
+        }
+        
+        .code-title {
+            background: #E85D4A;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .step {
+            background: rgba(232, 93, 74, 0.1);
+            border-left: 4px solid #E85D4A;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .step h3 {
+            color: #E85D4A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .step ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .step li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .step li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #E85D4A;
+            font-weight: bold;
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .download-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .download-item:hover {
+            background: rgba(232, 93, 74, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .download-item a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .download-item .size {
+            color: #4A90E2;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .warning {
+            background: rgba(255, 183, 197, 0.1);
+            border: 2px solid #FFB7C5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning:before {
+            content: "⚠️ ";
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .icon-preview {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 iPhone/PWA対応ガイド</h1>
+        <p class="subtitle">ホーム画面に可愛い蝶のアイコンを表示させよう</p>
+        
+        <!-- プレビュー -->
+        <div class="preview-section">
+            <h2>🦋 完成イメージ</h2>
+            <div class="icon-preview">
+                <div class="icon-item">
+                    <div class="icon-wrapper">
+                        <img src="apple-touch-icon.png" width="120" height="120" alt="iOS Icon">
+                    </div>
+                    <div class="icon-label">iPhoneホーム画面<br>180×180px</div>
+                </div>
+                
+                <div class="icon-item">
+                    <div class="icon-wrapper">
+                        <img src="android-chrome-192x192.png" width="120" height="120" alt="Android Icon">
+                    </div>
+                    <div class="icon-label">Android<br>192×192px</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ステップ1: HTMLに追加 -->
+        <div class="code-section">
+            <h2>ステップ1: HTMLの&lt;head&gt;に追加</h2>
+            
+            <div class="step">
+                <h3>📄 index.htmlを開いて以下を追加</h3>
+            </div>
+            
+            <div class="code-title">HTML - index.html</div>
+            <div class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    
+    &lt;!-- ファビコン設定 --&gt;
+    &lt;link rel="icon" type="image/x-icon" href="/favicon.ico"&gt;
+    &lt;link rel="icon" type="image/svg+xml" href="/favicon.svg"&gt;
+    
+    &lt;!-- 🆕 Apple Touch Icon（iPhone/iPad用） --&gt;
+    &lt;link rel="apple-touch-icon" href="/apple-touch-icon.png"&gt;
+    
+    &lt;!-- 🆕 PWA Manifest（必須） --&gt;
+    &lt;link rel="manifest" href="/manifest.json"&gt;
+    
+    &lt;!-- 🆕 テーマカラー --&gt;
+    &lt;meta name="theme-color" content="#1A3A5C"&gt;
+    
+    &lt;!-- 🆕 iOS用メタタグ --&gt;
+    &lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+    &lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;
+    &lt;meta name="apple-mobile-web-app-title" content="タトゥーOK温泉"&gt;
+    
+    &lt;title&gt;タトゥーOK温泉マップ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- アプリのコンテンツ --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></div>
+        </div>
+        
+        <!-- ステップ2: manifest.json作成 -->
+        <div class="code-section">
+            <h2>ステップ2: manifest.jsonファイルを作成</h2>
+            
+            <div class="step">
+                <h3>📝 publicフォルダに manifest.json を作成</h3>
+                <ul>
+                    <li>PWAとして認識されるために必須</li>
+                    <li>アプリ名、アイコン、テーマカラーを定義</li>
+                </ul>
+            </div>
+            
+            <div class="code-title">JSON - manifest.json</div>
+            <div class="code-block"><code>{
+  "name": "タトゥーOK温泉マップ",
+  "short_name": "温泉マップ",
+  "description": "タトゥーOKの温泉・銭湯を探せるアプリ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1A3A5C",
+  "theme_color": "#1A3A5C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}</code></div>
+        </div>
+        
+        <!-- ステップ3: ファイル配置 -->
+        <div class="code-section">
+            <h2>ステップ3: ファイルをpublicフォルダに配置</h2>
+            
+            <div class="step">
+                <h3>📁 以下のファイルをすべてpublicフォルダに置く</h3>
+            </div>
+            
+            <div class="code-block"><code>public/
+├── favicon.ico                    # ブラウザタブ用
+├── favicon.svg                    # モダンブラウザ用
+├── apple-touch-icon.png           # iPhone用 180×180
+├── android-chrome-192x192.png     # Android用 192×192
+├── android-chrome-512x512.png     # Android用 512×512
+└── manifest.json                  # PWA設定ファイル</code></div>
+        </div>
+        
+        <!-- ダウンロード -->
+        <div class="code-section">
+            <h2>📥 必要なファイルをダウンロード</h2>
+            
+            <div class="download-grid">
+                <div class="download-item">
+                    <a href="pattern3-improved.ico" download="favicon.ico">
+                        favicon.ico
+                    </a>
+                    <div class="size">48×48px</div>
+                </div>
+                
+                <div class="download-item">
+                    <a href="pattern3-improved.svg" download="favicon.svg">
+                        favicon.svg
+                    </a>
+                    <div class="size">SVG</div>
+                </div>
+                
+                <div class="download-item">
+                    <a href="apple-touch-icon.png" download="apple-touch-icon.png">
+                        apple-touch-icon.png
+                    </a>
+                    <div class="size">180×180px</div>
+                </div>
+                
+                <div class="download-item">
+                    <a href="android-chrome-192x192.png" download="android-chrome-192x192.png">
+                        android-chrome-192x192.png
+                    </a>
+                    <div class="size">192×192px</div>
+                </div>
+                
+                <div class="download-item">
+                    <a href="android-chrome-512x512.png" download="android-chrome-512x512.png">
+                        android-chrome-512x512.png
+                    </a>
+                    <div class="size">512×512px</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 確認方法 -->
+        <div class="code-section">
+            <h2>✅ 動作確認</h2>
+            
+            <div class="step">
+                <h3>iPhone/iPadでの確認手順</h3>
+                <ul>
+                    <li>Safariでアプリを開く</li>
+                    <li>画面下部の「共有」ボタンをタップ</li>
+                    <li>「ホーム画面に追加」を選択</li>
+                    <li>🦋 蝶のアイコンが表示されればOK！</li>
+                </ul>
+            </div>
+            
+            <div class="warning">
+                <strong>キャッシュに注意！</strong><br>
+                アイコンが更新されない場合は、Safariのキャッシュをクリアしてください。
+                設定 → Safari → 履歴とWebサイトデータを消去
+            </div>
+        </div>
+    </div>
+</body>
+</html>
