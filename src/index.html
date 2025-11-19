@@ -29,7 +29,26 @@
       <div class="container">
         <h1 class="app-title">タトゥーOK温泉・銭湯検索</h1>
         <p class="app-subtitle">全国のタトゥーフレンドリーな施設を検索</p>
-        <button id="logout-btn" class="logout-btn" style="display:none;">ログアウト</button>
+        <div class="header-actions">
+          <button id="backup-menu-btn" class="backup-menu-btn" title="バックアップ・復元">⚙️</button>
+          <button id="logout-btn" class="logout-btn" style="display:none;">ログアウト</button>
+        </div>
+      </div>
+      <!-- Backup Menu Modal -->
+      <div id="backup-menu" class="backup-menu" style="display: none;">
+        <div class="backup-menu-content">
+          <h3>バックアップ・復元</h3>
+          <button id="backup-export-btn" class="backup-menu-item">
+            <span class="icon">💾</span>
+            <span class="label">お気に入りをエクスポート</span>
+          </button>
+          <button id="backup-import-btn" class="backup-menu-item">
+            <span class="icon">📂</span>
+            <span class="label">お気に入りをインポート</span>
+          </button>
+          <input type="file" id="backup-import-input" accept=".json" style="display: none;">
+          <button id="backup-close-btn" class="backup-menu-close">✕</button>
+        </div>
       </div>
     </header>
 

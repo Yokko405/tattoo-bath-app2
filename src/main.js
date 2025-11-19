@@ -17,7 +17,7 @@ import {
   getUniqueTags,
 } from './utils/api.js';
 
-import { getFavorites } from './utils/storage.js';
+import { getFavorites, downloadFavorites, importFavoritesFromFile } from './utils/storage.js';
 import { getCurrentLocation, sortByDistance } from './utils/geo.js';
 import { checkAuthStatus, logout } from './utils/auth.js';
 
@@ -75,6 +75,9 @@ class TattooBathApp {
 
       // ログアウトボタン表示制御
       this.setupLogoutButton();
+
+      // バックアップボタン設定
+      this.setupBackupButton();
 
       // Show loading
       this.showLoading();
@@ -147,6 +150,71 @@ class TattooBathApp {
       if (appElement) appElement.classList.remove('authenticated');
       this.showLoginModal();
     };
+  }
+
+  setupBackupButton() {
+    const backupMenuBtn = document.getElementById('backup-menu-btn');
+    const backupMenu = document.getElementById('backup-menu');
+    const backupExportBtn = document.getElementById('backup-export-btn');
+    const backupImportBtn = document.getElementById('backup-import-btn');
+    const backupImportInput = document.getElementById('backup-import-input');
+    const backupCloseBtn = document.getElementById('backup-close-btn');
+
+    if (!backupMenuBtn) return;
+
+    // Menu toggle
+    backupMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      backupMenu.style.display = backupMenu.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!backupMenu.contains(e.target) && !backupMenuBtn.contains(e.target)) {
+        backupMenu.style.display = 'none';
+      }
+    });
+
+    // Export button
+    backupExportBtn.addEventListener('click', async () => {
+      const success = downloadFavorites(`tattoo-bath-favorites-${new Date().toISOString().split('T')[0]}.json`);
+      if (success) {
+        alert('お気に入りをファイルに保存しました！');
+      } else {
+        alert('保存に失敗しました。');
+      }
+      backupMenu.style.display = 'none';
+    });
+
+    // Import button
+    backupImportBtn.addEventListener('click', () => {
+      backupImportInput.click();
+    });
+
+    // Import input change
+    backupImportInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const merge = confirm('既存のお気に入りと統合しますか？\n\nキャンセルを選ぶと置き換わります。');
+      const success = await importFavoritesFromFile(file, merge);
+      
+      if (success) {
+        alert('お気に入りをインポートしました！\nページを更新してください。');
+        backupImportInput.value = '';
+        backupMenu.style.display = 'none';
+        // Optionally reload the page
+        // location.reload();
+      } else {
+        alert('インポートに失敗しました。\nファイル形式を確認してください。');
+        backupImportInput.value = '';
+      }
+    });
+
+    // Close button
+    backupCloseBtn.addEventListener('click', () => {
+      backupMenu.style.display = 'none';
+    });
   }
 
   initializeComponents(prefectures, tags) {
