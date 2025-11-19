@@ -2,40 +2,50 @@
   <!-- Background -->
   <rect width="200" height="200" fill="#2563eb" rx="40"/>
   
+  <!-- Onsen Symbol (♨️) - Large -->
+  <!-- Left curl -->
+  <path d="M 60 85 Q 55 75 60 65 Q 65 75 70 85" stroke="#ec4899" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Right curl -->
+  <path d="M 130 85 Q 125 75 130 65 Q 135 75 140 85" stroke="#ec4899" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Center curl -->
+  <path d="M 95 90 Q 90 78 95 65 Q 100 78 105 90" stroke="#ec4899" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Base line of onsen symbol -->
+  <line x1="55" y1="95" x2="145" y2="95" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Water below -->
+  <path d="M 50 105 Q 60 100 70 105 Q 80 110 90 105 Q 100 100 110 105 Q 120 110 130 105 Q 140 100 150 105" stroke="#06b6d4" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Butterfly inside (smaller, centered in the onsen symbol) -->
   <!-- Left Wing (Top) -->
-  <ellipse cx="70" cy="60" rx="25" ry="35" fill="#ec4899" opacity="0.9"/>
+  <ellipse cx="75" cy="75" rx="14" ry="20" fill="#fda4af" opacity="0.95"/>
   
   <!-- Left Wing (Bottom) -->
-  <ellipse cx="65" cy="110" rx="20" ry="30" fill="#f472b6" opacity="0.9"/>
+  <ellipse cx="72" cy="95" rx="11" ry="18" fill="#f472b6" opacity="0.95"/>
   
   <!-- Right Wing (Top) -->
-  <ellipse cx="130" cy="60" rx="25" ry="35" fill="#ec4899" opacity="0.9"/>
+  <ellipse cx="125" cy="75" rx="14" ry="20" fill="#fda4af" opacity="0.95"/>
   
   <!-- Right Wing (Bottom) -->
-  <ellipse cx="135" cy="110" rx="20" ry="30" fill="#f472b6" opacity="0.9"/>
+  <ellipse cx="128" cy="95" rx="11" ry="18" fill="#f472b6" opacity="0.95"/>
   
   <!-- Body -->
-  <ellipse cx="100" cy="85" rx="12" ry="45" fill="#1f2937"/>
-  
-  <!-- Antennae -->
-  <path d="M 95 40 Q 85 25 80 15" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M 105 40 Q 115 25 120 15" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="100" cy="85" rx="8" ry="28" fill="#1f2937"/>
   
   <!-- Head -->
-  <circle cx="100" cy="50" r="8" fill="#1f2937"/>
+  <circle cx="100" cy="60" r="6" fill="#1f2937"/>
   
-  <!-- Wing Details (spots) -->
-  <circle cx="65" cy="55" r="5" fill="#fda4af" opacity="0.6"/>
-  <circle cx="75" cy="70" r="4" fill="#fda4af" opacity="0.6"/>
-  <circle cx="135" cy="55" r="5" fill="#fda4af" opacity="0.6"/>
-  <circle cx="125" cy="70" r="4" fill="#fda4af" opacity="0.6"/>
+  <!-- Antennae -->
+  <path d="M 96 56 Q 90 48 88 40" stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 104 56 Q 110 48 112 40" stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round"/>
   
-  <!-- Onsen/Hot Spring Symbol (♨️ inspired - small water ripple at bottom) -->
-  <g transform="translate(100, 145)">
-    <!-- Water waves -->
-    <path d="M -15 0 Q -10 -3 -5 0 T 5 0 T 15 0" stroke="#06b6d4" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <path d="M -12 6 Q -7 3 -2 6 T 8 6 T 18 6" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
-  </g>
+  <!-- Wing spots/details -->
+  <circle cx="70" cy="70" r="3" fill="#fda4af" opacity="0.7"/>
+  <circle cx="78" cy="82" r="2.5" fill="#fda4af" opacity="0.7"/>
+  <circle cx="130" cy="70" r="3" fill="#fda4af" opacity="0.7"/>
+  <circle cx="122" cy="82" r="2.5" fill="#fda4af" opacity="0.7"/>
   
   <!-- Subtle gradient overlay for depth -->
   <defs>
