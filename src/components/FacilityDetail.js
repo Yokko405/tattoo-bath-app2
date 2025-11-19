@@ -32,7 +32,7 @@ export class FacilityDetail {
           <div class="modal-body">
             <div class="detail-section">
               <h3>基本情報</h3>
-              <p><strong>住所:</strong> ${this.facility.address}</p>
+              <p><strong>住所:</strong> <a href="https://www.google.com/maps/place/${this.facility.lat},${this.facility.lng}" target="_blank" rel="noopener noreferrer" class="address-link">${this.facility.address}</a></p>
               <p><strong>都道府県:</strong> ${this.facility.prefecture}</p>
               <p><strong>市区町村:</strong> ${this.facility.city}</p>
               ${distanceText}
@@ -72,14 +72,9 @@ export class FacilityDetail {
             </div>
 
             <div class="detail-actions">
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=${this.facility.lat},${this.facility.lng}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn-primary"
-              >
+              <button id="detail-maps-btn" class="btn-primary">
                 Google Mapsで開く
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -94,6 +89,7 @@ export class FacilityDetail {
     const closeBtn = this.container.querySelector('#modal-close');
     const overlay = this.container.querySelector('.modal-overlay');
     const favoriteBtn = this.container.querySelector('#detail-favorite-btn');
+    const mapsBtn = this.container.querySelector('#detail-maps-btn');
 
     closeBtn.addEventListener('click', () => {
       this.close();
@@ -109,6 +105,11 @@ export class FacilityDetail {
       const newStatus = toggleFavorite(this.facility.id);
       favoriteBtn.classList.toggle('active', newStatus);
       favoriteBtn.textContent = newStatus ? '★' : '☆';
+    });
+
+    mapsBtn.addEventListener('click', () => {
+      const mapsUrl = `https://www.google.com/maps/place/${this.facility.lat},${this.facility.lng}`;
+      window.open(mapsUrl, '_blank');
     });
 
     // ESC key to close

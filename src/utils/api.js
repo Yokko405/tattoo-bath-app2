@@ -2,6 +2,8 @@
  * API utilities for fetching facility data
  */
 
+import facilitiesData from '../../public/data/facilities.json';
+
 let cachedFacilities = null;
 
 /**
@@ -14,12 +16,7 @@ export async function fetchFacilities() {
   }
 
   try {
-    const response = await fetch(import.meta.env.BASE_URL + 'data/facilities.json');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    cachedFacilities = data.facilities;
+    cachedFacilities = facilitiesData.facilities;
     return cachedFacilities;
   } catch (error) {
     console.error('Failed to fetch facilities:', error);

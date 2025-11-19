@@ -12,7 +12,7 @@ interface Env {
 }
 
 // パスワード（環境変数から取得、なければデフォルト値）
-const PASSWORD = 'your-secure-password-here'; // 本番環境では環境変数を使用
+const PASSWORD = 'tigger-123'; // 本番環境では環境変数を使用
 
 // セッション有効期限（24時間）
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
