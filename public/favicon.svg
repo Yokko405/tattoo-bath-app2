@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#2563eb" rx="40"/>
+  
+  <!-- Left Wing (Top) -->
+  <ellipse cx="70" cy="60" rx="25" ry="35" fill="#ec4899" opacity="0.9"/>
+  
+  <!-- Left Wing (Bottom) -->
+  <ellipse cx="65" cy="110" rx="20" ry="30" fill="#f472b6" opacity="0.9"/>
+  
+  <!-- Right Wing (Top) -->
+  <ellipse cx="130" cy="60" rx="25" ry="35" fill="#ec4899" opacity="0.9"/>
+  
+  <!-- Right Wing (Bottom) -->
+  <ellipse cx="135" cy="110" rx="20" ry="30" fill="#f472b6" opacity="0.9"/>
+  
+  <!-- Body -->
+  <ellipse cx="100" cy="85" rx="12" ry="45" fill="#1f2937"/>
+  
+  <!-- Antennae -->
+  <path d="M 95 40 Q 85 25 80 15" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 105 40 Q 115 25 120 15" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Head -->
+  <circle cx="100" cy="50" r="8" fill="#1f2937"/>
+  
+  <!-- Wing Details (spots) -->
+  <circle cx="65" cy="55" r="5" fill="#fda4af" opacity="0.6"/>
+  <circle cx="75" cy="70" r="4" fill="#fda4af" opacity="0.6"/>
+  <circle cx="135" cy="55" r="5" fill="#fda4af" opacity="0.6"/>
+  <circle cx="125" cy="70" r="4" fill="#fda4af" opacity="0.6"/>
+  
+  <!-- Onsen/Hot Spring Symbol (♨️ inspired - small water ripple at bottom) -->
+  <g transform="translate(100, 145)">
+    <!-- Water waves -->
+    <path d="M -15 0 Q -10 -3 -5 0 T 5 0 T 15 0" stroke="#06b6d4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M -12 6 Q -7 3 -2 6 T 8 6 T 18 6" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  
+  <!-- Subtle gradient overlay for depth -->
+  <defs>
+    <radialGradient id="overlay" cx="50%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.1" />
+    </radialGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#overlay)" rx="40"/>
+</svg>
