@@ -136,15 +136,23 @@ export function savePreferences(preferences) {
 
 /**
  * Session token management for authentication
- * iOS Safari ではクロスオリジン Cookie がブロックされるため、
- * セッショントークンをセッションストレージに保存する
+ * localStorage + 有効期限で24時間セッションを保持
  */
 const SESSION_TOKEN_KEY = 'tattoo-bath-session-token';
+const SESSION_EXPIRY_KEY = 'tattoo-bath-session-expiry';
+const SESSION_DURATION_MS = 24 * 60 * 60 * 1000; // 24時間をミリ秒で
 
 export function setSessionToken(token) {
   try {
-    sessionStorage.setItem(SESSION_TOKEN_KEY, token);
-    console.log('[debug][storage] Session token saved');
+    const now = new Date().getTime();
+    const expiryTime = now + SESSION_DURATION_MS;
+    
+    localStorage.setItem(SESSION_TOKEN_KEY, token);
+    localStorage.setItem(SESSION_EXPIRY_KEY, expiryTime.toString());
+    
+    console.log('[debug][storage] Session token saved (expires in 24 hours)', {
+      expiresAt: new Date(expiryTime).toISOString(),
+    });
     return true;
   } catch (error) {
     console.error('Failed to save session token:', error);
@@ -154,8 +162,24 @@ export function setSessionToken(token) {
 
 export function getSessionToken() {
   try {
-    const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
-    console.log('[debug][storage] Retrieved session token:', token ? 'exists' : 'not found');
+    const token = localStorage.getItem(SESSION_TOKEN_KEY);
+    const expiryTimeStr = localStorage.getItem(SESSION_EXPIRY_KEY);
+    
+    if (!token || !expiryTimeStr) {
+      console.log('[debug][storage] Session token not found');
+      return null;
+    }
+    
+    const expiryTime = parseInt(expiryTimeStr, 10);
+    const now = new Date().getTime();
+    
+    if (now > expiryTime) {
+      console.log('[debug][storage] Session token expired, clearing');
+      clearSessionToken();
+      return null;
+    }
+    
+    console.log('[debug][storage] Session token valid (expires in', Math.round((expiryTime - now) / 1000 / 60), 'minutes)');
     return token;
   } catch (error) {
     console.error('Failed to get session token:', error);
@@ -165,7 +189,8 @@ export function getSessionToken() {
 
 export function clearSessionToken() {
   try {
-    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    localStorage.removeItem(SESSION_TOKEN_KEY);
+    localStorage.removeItem(SESSION_EXPIRY_KEY);
     console.log('[debug][storage] Session token cleared');
     return true;
   } catch (error) {
