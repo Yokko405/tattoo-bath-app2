@@ -458,9 +458,7 @@ body {
 }
 
 .modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  position: static;
   background: none;
   border: none;
   font-size: 2rem;
@@ -479,17 +477,21 @@ body {
   background: var(--background);
 }
 
-.modal-header {
+.modal-header-top {
   display: flex;
   justify-content: space-between;
-  align-items: start;
-  padding: 2rem 2rem 1rem 2rem;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header {
+  padding: 1rem 2rem;
   border-bottom: 1px solid var(--border);
 }
 
 .modal-header h2 {
-  flex: 1;
-  padding-right: 3rem;
+  margin: 0;
 }
 
 .modal-body {

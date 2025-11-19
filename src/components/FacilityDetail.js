@@ -20,13 +20,15 @@ export class FacilityDetail {
     this.container.innerHTML = `
       <div class="modal-overlay">
         <div class="modal-content">
-          <button class="modal-close" id="modal-close">×</button>
-
-          <div class="modal-header">
-            <h2>${this.facility.name}</h2>
+          <div class="modal-header-top">
+            <button class="modal-close" id="modal-close">×</button>
             <button class="favorite-btn ${isFav ? 'active' : ''}" id="detail-favorite-btn">
               ${isFav ? '★' : '☆'}
             </button>
+          </div>
+
+          <div class="modal-header">
+            <h2>${this.facility.name}</h2>
           </div>
 
           <div class="modal-body">
