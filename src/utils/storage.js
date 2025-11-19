@@ -173,3 +173,111 @@ export function clearSessionToken() {
     return false;
   }
 }
+
+/**
+ * Export favorites to JSON file
+ * @returns {string} JSON string containing favorites and metadata
+ */
+export function exportFavoritesData() {
+  try {
+    const favorites = getFavorites();
+    const exportData = {
+      version: '1.0',
+      exportDate: new Date().toISOString(),
+      count: favorites.length,
+      favorites: favorites,
+    };
+    return JSON.stringify(exportData, null, 2);
+  } catch (error) {
+    console.error('Failed to export favorites:', error);
+    return null;
+  }
+}
+
+/**
+ * Download favorites as JSON file
+ * @param {string} filename - Filename for download (default: tattoo-bath-favorites.json)
+ */
+export function downloadFavorites(filename = 'tattoo-bath-favorites.json') {
+  try {
+    const data = exportFavoritesData();
+    if (!data) return false;
+
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    console.log('[storage] Favorites downloaded:', filename);
+    return true;
+  } catch (error) {
+    console.error('Failed to download favorites:', error);
+    return false;
+  }
+}
+
+/**
+ * Import favorites from JSON data
+ * @param {string} jsonData - JSON string containing favorites data
+ * @param {boolean} merge - If true, merge with existing favorites; if false, replace
+ * @returns {boolean} Success status
+ */
+export function importFavoritesData(jsonData, merge = true) {
+  try {
+    const importData = JSON.parse(jsonData);
+    
+    if (!Array.isArray(importData.favorites)) {
+      throw new Error('Invalid favorites data format');
+    }
+
+    let newFavorites = importData.favorites;
+    
+    if (merge) {
+      // Merge with existing favorites
+      const existing = getFavorites();
+      newFavorites = [...new Set([...existing, ...newFavorites])];
+    }
+
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
+    console.log('[storage] Favorites imported:', newFavorites.length, 'items');
+    return true;
+  } catch (error) {
+    console.error('Failed to import favorites:', error);
+    return false;
+  }
+}
+
+/**
+ * Import favorites from file input
+ * @param {File} file - File object from input element
+ * @param {boolean} merge - If true, merge with existing favorites; if false, replace
+ * @returns {Promise<boolean>} Success status
+ */
+export function importFavoritesFromFile(file, merge = true) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+      try {
+        const jsonData = e.target.result;
+        const success = importFavoritesData(jsonData, merge);
+        resolve(success);
+      } catch (error) {
+        console.error('Failed to read file:', error);
+        resolve(false);
+      }
+    };
+    
+    reader.onerror = () => {
+      console.error('File read error');
+      resolve(false);
+    };
+    
+    reader.readAsText(file);
+  });
+}

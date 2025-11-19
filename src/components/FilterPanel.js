@@ -2,6 +2,8 @@
  * FilterPanel component for filtering facilities by prefecture and tags
  */
 
+import { downloadFavorites, importFavoritesFromFile } from '../utils/storage.js';
+
 export class FilterPanel {
   constructor(container, prefectures, tags, onFilter) {
     this.container = container;
@@ -45,6 +47,13 @@ export class FilterPanel {
 
         <div class="filter-actions">
           <button id="clear-filters-btn" class="btn-secondary">クリア</button>
+          <div class="backup-actions">
+            <button id="export-favorites-btn" class="btn-export" title="お気に入りをファイルに保存">💾 エクスポート</button>
+            <label class="btn-import">
+              📂 インポート
+              <input type="file" id="import-favorites-input" accept=".json" style="display: none;">
+            </label>
+          </div>
         </div>
       </div>
     `;
@@ -57,6 +66,8 @@ export class FilterPanel {
     const tagCheckboxes = this.container.querySelectorAll('.tag-checkbox');
     const favoritesOnly = this.container.querySelector('#favorites-only');
     const clearBtn = this.container.querySelector('#clear-filters-btn');
+    const exportBtn = this.container.querySelector('#export-favorites-btn');
+    const importInput = this.container.querySelector('#import-favorites-input');
 
     prefectureFilter.addEventListener('change', (e) => {
       this.selectedPrefecture = e.target.value;
@@ -78,6 +89,35 @@ export class FilterPanel {
 
     clearBtn.addEventListener('click', () => {
       this.clearFilters();
+    });
+
+    // Export button
+    exportBtn.addEventListener('click', () => {
+      const success = downloadFavorites(`tattoo-bath-favorites-${new Date().toISOString().split('T')[0]}.json`);
+      if (success) {
+        alert('お気に入りをファイルに保存しました！');
+      } else {
+        alert('保存に失敗しました。');
+      }
+    });
+
+    // Import input
+    importInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Ask user if they want to merge or replace
+      const merge = confirm('既存のお気に入りと統合しますか？\n\nキャンセルを選ぶと置き換わります。');
+      
+      const success = await importFavoritesFromFile(file, merge);
+      if (success) {
+        alert('お気に入りをインポートしました！\nページを更新してください。');
+        // Reset input
+        importInput.value = '';
+      } else {
+        alert('インポートに失敗しました。\nファイル形式を確認してください。');
+        importInput.value = '';
+      }
     });
   }
 
@@ -118,3 +158,4 @@ export class FilterPanel {
     this.render();
   }
 }
+
