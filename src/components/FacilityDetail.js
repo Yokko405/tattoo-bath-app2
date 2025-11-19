@@ -32,7 +32,7 @@ export class FacilityDetail {
           <div class="modal-body">
             <div class="detail-section">
               <h3>基本情報</h3>
-              <p><strong>住所:</strong> <a href="https://www.google.com/maps/place/${this.facility.lat},${this.facility.lng}" target="_blank" rel="noopener noreferrer" class="address-link">${this.facility.address}</a></p>
+              <p><strong>住所:</strong> <a href="#" id="address-link" class="address-link">${this.facility.address}</a></p>
               <p><strong>都道府県:</strong> ${this.facility.prefecture}</p>
               <p><strong>市区町村:</strong> ${this.facility.city}</p>
               ${distanceText}
@@ -108,9 +108,20 @@ export class FacilityDetail {
     });
 
     mapsBtn.addEventListener('click', () => {
-      const mapsUrl = `https://www.google.com/maps/place/${this.facility.lat},${this.facility.lng}`;
+      const searchQuery = this.buildMapsSearchQuery();
+      const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
       window.open(mapsUrl, '_blank');
     });
+
+    const addressLink = this.container.querySelector('#address-link');
+    if (addressLink) {
+      addressLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const searchQuery = this.buildMapsSearchQuery();
+        const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+        window.open(mapsUrl, '_blank');
+      });
+    }
 
     // ESC key to close
     const escHandler = (e) => {
@@ -125,5 +136,16 @@ export class FacilityDetail {
   close() {
     this.container.style.display = 'none';
     this.container.innerHTML = '';
+  }
+
+  buildMapsSearchQuery() {
+    // 住所がある場合は「住所 施設名」で検索
+    if (this.facility.address && this.facility.address.trim()) {
+      return `${this.facility.address} ${this.facility.name}`;
+    }
+    
+    // 住所がない場合は「都道府県 市区町村 施設名」で検索
+    const parts = [this.facility.prefecture, this.facility.city, this.facility.name].filter(p => p && p.trim());
+    return parts.join(' ');
   }
 }
