@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>改良版ファビコン - Before & After</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1A3A5C 0%, #2C2C2C 100%);
+            color: #fff;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #E85D4A, #FFB7C5, #4A90E2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .version-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .version-card.improved {
+            border: 2px solid #E85D4A;
+            box-shadow: 0 10px 40px rgba(232, 93, 74, 0.3);
+        }
+        
+        .version-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .before .version-title { color: #4A90E2; }
+        .improved .version-title { color: #E85D4A; }
+        
+        .size-comparison {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .size-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            margin: 10px 0;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .size-label {
+            color: #2C2C2C;
+            font-weight: 600;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+        
+        .icon-display {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .improvements {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .improvements li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .improvements li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .key-changes {
+            background: rgba(232, 93, 74, 0.1);
+            border-left: 4px solid #E85D4A;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .key-changes h3 {
+            color: #E85D4A;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .browser-preview {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .browser-preview h3 {
+            color: #2C2C2C;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .browser-tabs {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .browser-tab {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            color: #2C2C2C;
+            font-size: 0.9rem;
+        }
+        
+        .download-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #E85D4A, #C44536);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(232, 93, 74, 0.4);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(232, 93, 74, 0.6);
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #E85D4A;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 968px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦋 改良版ファビコン - Before & After</h1>
+        <p class="subtitle">小さなサイズでも視認性抜群！蝶と♨を融合</p>
+        
+        <div class="comparison">
+            <!-- BEFORE -->
+            <div class="version-card before">
+                <h2 class="version-title">❌ Before（旧版）</h2>
+                
+                <div class="size-comparison">
+                    <div class="size-row">
+                        <span class="size-label">16×16px</span>
+                        <div class="icon-display">
+                            <img src="../favicon-designs/pattern3-butterfly-minimal.svg" width="16" height="16" alt="Before 16px">
+                        </div>
+                    </div>
+                    
+                    <div class="size-row">
+                        <span class="size-label">32×32px</span>
+                        <div class="icon-display">
+                            <img src="../favicon-designs/pattern3-butterfly-minimal.svg" width="32" height="32" alt="Before 32px">
+                        </div>
+                    </div>
+                    
+                    <div class="size-row">
+                        <span class="size-label">48×48px</span>
+                        <div class="icon-display">
+                            <img src="../favicon-designs/pattern3-butterfly-minimal.svg" width="48" height="48" alt="Before 48px">
+                        </div>
+                    </div>
+                    
+                    <div class="size-row">
+                        <span class="size-label">64×64px</span>
+                        <div class="icon-display">
+                            <img src="../favicon-designs/pattern3-butterfly-minimal.svg" width="64" height="64" alt="Before 64px">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="key-changes">
+                    <h3>🤔 課題</h3>
+                    <ul class="improvements">
+                        <li>16×16pxで♨マークがほぼ見えない</li>
+                        <li>蝶と♨が離れすぎて統一感が弱い</li>
+                        <li>小さいサイズでディテールが潰れる</li>
+                        <li>温泉感が伝わりにくい</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- AFTER -->
+            <div class="version-card improved">
+                <h2 class="version-title">✨ After（改良版）<span class="badge">NEW!</span></h2>
+                
+                <div class="size-comparison">
+                    <div class="size-row">
+                        <span class="size-label">16×16px</span>
+                        <div class="icon-display">
+                            <img src="pattern3-improved.svg" width="16" height="16" alt="After 16px">
+                        </div>
+                    </div>
+                    
+                    <div class="size-row">
+                        <span class="size-label">32×32px</span>
+                        <div class="icon-display">
+                            <img src="pattern3-improved.svg" width="32" height="32" alt="After 32px">
+                        </div>
+                    </div>
+                    
+                    <div class="size-row">
+                        <span class="size-label">48×48px</span>
+                        <div class="icon-display">
+                            <img src="pattern3-improved.svg" width="48" height="48" alt="After 48px">
+                        </div>
+                    </div>
+                    
+                    <div class="size-row">
+                        <span class="size-label">64×64px</span>
+                        <div class="icon-display">
+                            <img src="pattern3-improved.svg" width="64" height="64" alt="After 64px">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="key-changes">
+                    <h3>✅ 改善点</h3>
+                    <ul class="improvements">
+                        <li>♨マークを蝶の体の中心に統合</li>
+                        <li>蝶を画面いっぱいに大胆配置</li>
+                        <li>湯気を太く、はっきり視認可能に</li>
+                        <li>16×16pxでも温泉感がしっかり伝わる</li>
+                        <li>蝶×温泉の融合で「タトゥーOK温泉」を1つのアイコンで表現</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ブラウザプレビュー -->
+        <div class="browser-preview">
+            <h3>🌐 実際のブラウザタブでの見え方（16×16px）</h3>
+            <div class="browser-tabs">
+                <div class="browser-tab">
+                    <img src="../favicon-designs/pattern3-butterfly-minimal.ico" width="16" height="16" alt="Before">
+                    <span>❌ Before - タトゥーOK温泉</span>
+                </div>
+                <div class="browser-tab">
+                    <img src="pattern3-improved-16.png" width="16" height="16" alt="After">
+                    <span>✨ After - タトゥーOK温泉</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ダウンロード -->
+        <div class="download-section">
+            <h2 style="margin-bottom: 30px;">📥 改良版をダウンロード</h2>
+            <a href="pattern3-improved.ico" class="download-btn" download>
+                🦋 favicon.ico をダウンロード
+            </a>
+            <p style="margin-top: 20px; opacity: 0.8;">SVG版、PNG版も利用可能</p>
+        </div>
+    </div>
+</body>
+</html>
