@@ -12,6 +12,8 @@ export class MapView {
     this.map = null;
     this.markers = [];
     this.infoWindow = null;
+    this.currentLocationMarker = null;
+    this.currentLocationCircle = null;
   }
 
   async initialize() {
@@ -142,10 +144,52 @@ export class MapView {
     }
   }
 
-  centerOnLocation(lat, lng, zoom = 12) {
+  centerOnLocation(lat, lng, zoom = 12, accuracy = null) {
     if (this.map) {
       this.map.setCenter({ lat, lng });
       this.map.setZoom(zoom);
+
+      // Show current location marker and accuracy circle
+      this.showCurrentLocation(lat, lng, accuracy);
+    }
+  }
+
+  showCurrentLocation(lat, lng, accuracy = null) {
+    // Remove old markers if they exist
+    if (this.currentLocationMarker) {
+      this.currentLocationMarker.setMap(null);
+    }
+    if (this.currentLocationCircle) {
+      this.currentLocationCircle.setMap(null);
+    }
+
+    // Add blue dot for current location
+    this.currentLocationMarker = new google.maps.Marker({
+      position: { lat, lng },
+      map: this.map,
+      title: '現在地',
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        fillColor: '#3b82f6',
+        fillOpacity: 1,
+        strokeColor: '#1e40af',
+        strokeWeight: 2,
+      },
+    });
+
+    // Show accuracy circle if accuracy data is available
+    if (accuracy && accuracy > 0) {
+      this.currentLocationCircle = new google.maps.Circle({
+        map: this.map,
+        center: { lat, lng },
+        radius: accuracy, // Accuracy is in meters
+        strokeColor: '#93c5fd',
+        strokeOpacity: 0.5,
+        strokeWeight: 1,
+        fillColor: '#3b82f6',
+        fillOpacity: 0.1,
+      });
     }
   }
 

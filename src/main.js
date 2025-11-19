@@ -242,9 +242,9 @@ class TattooBathApp {
 
       this.updateDisplay();
 
-      // Center map on user location
+      // Center map on user location with accuracy circle
       if (this.mapView) {
-        this.mapView.centerOnLocation(location.lat, location.lng);
+        this.mapView.centerOnLocation(location.lat, location.lng, 12, location.accuracy);
       }
 
       this.hideLoading();
