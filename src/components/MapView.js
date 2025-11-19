@@ -66,26 +66,6 @@ export class MapView {
 
     // Create markers for each facility
     facilities.forEach((facility, index) => {
-      // Create custom icon with offset to avoid overlap with closing button
-      const mod = index % 4;
-      let offsetX = 0;
-      let offsetY = 0;
-      
-      // Position markers in different directions with larger offset
-      if (mod === 0) {
-        offsetX = -25;
-        offsetY = -25;
-      } else if (mod === 1) {
-        offsetX = 25;
-        offsetY = -25;
-      } else if (mod === 2) {
-        offsetX = -25;
-        offsetY = 25;
-      } else {
-        offsetX = 25;
-        offsetY = 25;
-      }
-      
       const marker = new google.maps.Marker({
         position: { lat: facility.lat, lng: facility.lng },
         map: this.map,
@@ -98,7 +78,6 @@ export class MapView {
           fillOpacity: 0.9,
           strokeColor: '#dc2626',
           strokeWeight: 2,
-          anchor: new google.maps.Point(offsetX, offsetY),
         },
       });
 
