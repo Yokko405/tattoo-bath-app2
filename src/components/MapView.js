@@ -163,19 +163,23 @@ export class MapView {
       this.currentLocationCircle.setMap(null);
     }
 
-    // Add blue dot for current location
+    // Create SVG icon for current location with pulsing effect
+    const svgIcon = {
+      path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5z',
+      scale: 1.5,
+      fillColor: '#2563eb',
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 2,
+    };
+
+    // Add target icon for current location
     this.currentLocationMarker = new google.maps.Marker({
       position: { lat, lng },
       map: this.map,
       title: '現在地',
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 8,
-        fillColor: '#3b82f6',
-        fillOpacity: 1,
-        strokeColor: '#1e40af',
-        strokeWeight: 2,
-      },
+      icon: svgIcon,
+      zIndex: 100, // Ensure it's on top
     });
 
     // Show accuracy circle if accuracy data is available
