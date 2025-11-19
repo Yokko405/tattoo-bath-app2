@@ -15,9 +15,6 @@
   <!-- Base line of onsen symbol -->
   <line x1="55" y1="95" x2="145" y2="95" stroke="#ec4899" stroke-width="3" stroke-linecap="round"/>
   
-  <!-- Water below -->
-  <path d="M 50 105 Q 60 100 70 105 Q 80 110 90 105 Q 100 100 110 105 Q 120 110 130 105 Q 140 100 150 105" stroke="#06b6d4" stroke-width="2" fill="none" stroke-linecap="round"/>
-  
   <!-- Butterfly inside (smaller, centered in the onsen symbol) -->
   <!-- Left Wing (Top) -->
   <ellipse cx="75" cy="75" rx="14" ry="20" fill="#fda4af" opacity="0.95"/>
@@ -46,6 +43,28 @@
   <circle cx="78" cy="82" r="2.5" fill="#fda4af" opacity="0.7"/>
   <circle cx="130" cy="70" r="3" fill="#fda4af" opacity="0.7"/>
   <circle cx="122" cy="82" r="2.5" fill="#fda4af" opacity="0.7"/>
+  
+  <!-- Water/Steam section (lower half) -->
+  <!-- Main water container (basin shape) -->
+  <ellipse cx="100" cy="140" rx="45" ry="25" fill="#06b6d4" opacity="0.15"/>
+  
+  <!-- Water ripple waves -->
+  <path d="M 60 125 Q 70 120 80 125 Q 90 130 100 125 Q 110 120 120 125 Q 130 130 140 125" stroke="#06b6d4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  
+  <path d="M 55 135 Q 68 130 82 135 Q 98 142 115 135 Q 130 130 145 135" stroke="#06b6d4" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
+  
+  <path d="M 60 145 Q 75 140 90 145 Q 105 150 120 145 Q 135 140 150 145" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+  
+  <!-- Steam bubbles -->
+  <circle cx="50" cy="110" r="3" fill="#06b6d4" opacity="0.5"/>
+  <circle cx="75" cy="115" r="2.5" fill="#06b6d4" opacity="0.4"/>
+  <circle cx="105" cy="110" r="2.5" fill="#06b6d4" opacity="0.4"/>
+  <circle cx="130" cy="115" r="3" fill="#06b6d4" opacity="0.5"/>
+  <circle cx="150" cy="112" r="2" fill="#06b6d4" opacity="0.4"/>
+  
+  <!-- Additional steam wisps (curved lines) -->
+  <path d="M 65 105 Q 60 100 65 90" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+  <path d="M 135 105 Q 140 100 135 90" stroke="#06b6d4" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.5"/>
   
   <!-- Subtle gradient overlay for depth -->
   <defs>
