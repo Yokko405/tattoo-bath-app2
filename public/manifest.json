@@ -2,7 +2,7 @@
   "name": "タトゥーOK温泉マップ",
   "short_name": "温泉マップ",
   "description": "タトゥーOKの温泉・銭湯を探せるアプリ",
-  "start_url": "/",
+  "start_url": "/tattoo-bath-app2/",
   "display": "standalone",
   "background_color": "#1A3A5C",
   "theme_color": "#1A3A5C",
