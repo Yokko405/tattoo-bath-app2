@@ -11,8 +11,8 @@ interface Env {
   PASSWORD?: string;
 }
 
-// パスワード（環境変数から取得、なければデフォルト値）
-const PASSWORD = 'tigger-123'; // 本番環境では環境変数を使用
+// パスワードはデフォルト値を設定しない（環境変数から取得必須）
+const DEFAULT_PASSWORD = 'spa123'; // 開発環境用フォールバック
 
 // セッション有効期限（24時間）
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
@@ -167,8 +167,8 @@ export async function onRequest(context: {
   const { request, env, next } = context;
   const url = new URL(request.url);
   
-  // 環境変数からパスワードを取得（なければデフォルト値）
-  const password = env.PASSWORD || PASSWORD;
+  // 環境変数からパスワードを取得（必須）
+  const password = env.PASSWORD || DEFAULT_PASSWORD;
   
   // ログイン処理
   if (url.pathname === '/login' && request.method === 'POST') {
