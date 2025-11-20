@@ -440,6 +440,7 @@
     {
       "id": "fac-044",
       "name": "サウナラボ神田",
+      "googleMapsName": "SaunaLab Kanda",
       "slug": "saunalab-kanda",
       "prefecture": "東京都",
       "city": "千代田区",
