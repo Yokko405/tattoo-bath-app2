@@ -110,18 +110,32 @@ export class FacilityDetail {
     });
 
     mapsBtn.addEventListener('click', () => {
-      const searchQuery = this.buildMapsSearchQuery();
-      const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
-      window.open(mapsUrl, '_blank');
+      // 座標がある場合は座標で直接開く
+      if (this.facility.lat && this.facility.lng) {
+        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${this.facility.lat},${this.facility.lng}`;
+        window.open(mapsUrl, '_blank');
+      } else {
+        // 座標がない場合は検索クエリで検索
+        const searchQuery = this.buildMapsSearchQuery();
+        const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+        window.open(mapsUrl, '_blank');
+      }
     });
 
     const addressLink = this.container.querySelector('#address-link');
     if (addressLink) {
       addressLink.addEventListener('click', (e) => {
         e.preventDefault();
-        const searchQuery = this.buildMapsSearchQuery();
-        const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
-        window.open(mapsUrl, '_blank');
+        // 座標がある場合は座標で直接開く
+        if (this.facility.lat && this.facility.lng) {
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${this.facility.lat},${this.facility.lng}`;
+          window.open(mapsUrl, '_blank');
+        } else {
+          // 座標がない場合は検索クエリで検索
+          const searchQuery = this.buildMapsSearchQuery();
+          const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
+          window.open(mapsUrl, '_blank');
+        }
       });
     }
 
