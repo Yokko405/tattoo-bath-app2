@@ -141,13 +141,16 @@ export class FacilityDetail {
   }
 
   buildMapsSearchQuery() {
+    // Google Maps用の名前（googleMapsName）がある場合はそれを使用
+    const facilityName = this.facility.googleMapsName || this.facility.name;
+    
     // 住所がある場合は「住所 施設名」で検索
     if (this.facility.address && this.facility.address.trim()) {
-      return `${this.facility.address} ${this.facility.name}`;
+      return `${this.facility.address} ${facilityName}`;
     }
     
     // 住所がない場合は「都道府県 市区町村 施設名」で検索
-    const parts = [this.facility.prefecture, this.facility.city, this.facility.name].filter(p => p && p.trim());
+    const parts = [this.facility.prefecture, this.facility.city, facilityName].filter(p => p && p.trim());
     return parts.join(' ');
   }
 }
