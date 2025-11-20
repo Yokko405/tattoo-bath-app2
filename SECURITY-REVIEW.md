@@ -217,26 +217,12 @@ function requiresAuth(pathname) {
 
 ### 優先度 1: 高い（即座に対応）
 
-#### 1-1. functions/_middleware.ts のパスワード環境変数化
+#### 1-1. ✅ パスワード環境変数化（完了）
 
-**現在:**
-```typescript
-const PASSWORD = 'spa123';
-```
+**現在:** Cloudflare Workers のシークレットで管理済み  
+**状態:** セキュア ✅
 
-**改善案:**
-```typescript
-interface Env {
-  PASSWORD?: string;
-}
-
-export default {
-  async middleware(request: Request, env: Env) {
-    const PASSWORD = env.PASSWORD || 'spa123'; // フォールバック
-    // ...
-  }
-}
-```
+注記：`functions/_middleware.ts` は Cloudflare Pages 用で、本アプリケーションでは使用されていません（GitHub Pages ホスト）。削除予定。
 
 ---
 
